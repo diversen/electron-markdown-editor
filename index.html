@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Markdown Editor</title>
+        <meta charset="UTF-8">
+        
+        <!-- Simple env script 
+          -- Sets env var: Is this a browser or electron? -->
+        <script src="scripts/env.js"></script>
+        <script>
+            // Only electron menu - if env is electron
+            if (app.env === 'electron'){  
+                document.write('<script src="scripts/menu.js"><\/script>');
+            }
+        </script>
+        <script>
+
+            /*
+             * Load jQuery from modules or remote if browser
+             */
+            if (app.env === 'electron'){   
+                window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.js');    
+            } else {
+                document.write('<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"><\/script>');
+            }
+            
+            var isDefined = function (attr) {
+                if (typeof attr !== typeof undefined && attr !== false) {
+                    return true;
+                }
+                return false;
+            }
+
+            // Prevent default click 'a' event
+            if (app.env === 'electron'){
+                var shell = require('shell');
+                $(document).on('click', "a", function(event) {
+                    event.preventDefault();
+                    var url = $(this).attr('href');
+                    if (isDefined(url)) {
+                        shell.openExternal(url);
+                    }
+                });  
+            }
+
+        </script>
+        <!-- We use uikit and the uikit components: notify, htmleditor
+          -- The htmleditor is a modification and is loaded later ... -->
+        
+        <link rel="stylesheet" href="node_modules/uikit/dist/css/uikit.css" />
+        <link rel="stylesheet" href="node_modules/uikit/dist/css/components/notify.css" />        
+        <link rel="stylesheet" href="node_modules/uikit/dist/css/components/htmleditor.css">
+        
+        <script src="node_modules/uikit/dist/js/uikit.js"></script>
+        <script src="node_modules/uikit/dist/js/components/notify.js"></script>
+        
+        <!-- Codemirror and marked dependencies -->
+        <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+        <script src="node_modules/codemirror/lib/codemirror.js"></script>
+        <script src="node_modules/codemirror/mode/markdown/markdown.js"></script>
+        <script src="node_modules/codemirror/addon/mode/overlay.js"></script>
+        <script src="node_modules/codemirror/mode/xml/xml.js"></script>
+        <script src="node_modules/codemirror/mode/gfm/gfm.js"></script>
+
+        <!-- Mathjax config -->
+        <script src="node_modules/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    preview: "none",
+                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                    processEscapes: true
+                },
+                messageStyle: "none"
+                
+            });
+        </script>
+
+        <!-- Modified version of UIKIT htmleditor -->
+        <script src="scripts/files-web.js"></script>
+        <script src="scripts/app.js"></script>
+        
+        <script src="scripts/bundle.js"></script>
+        <script src="scripts/htmleditor.js"></script>
+        <script src="scripts/store.js"></script>
+
+        <!-- Highlight -->        
+        <link rel="stylesheet" href="node_modules/highlight.js/styles/default.css">
+        <script src="node_modules/highlight.js/lib/highlight.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+
+            // File browsing
+            if (app.env === 'electron'){
+                document.write('<script type="text/javascript" src="scripts/files.js"><\/script>');
+            } else {
+                document.write('<script type="text/javascript" src="scripts/files-web.js"><\/script>');
+            }
+
+        </script>
+    </head>
+    <body>
+        <div id="my-id" class="uk-modal">
+            <div class="uk-modal-dialog">
+                <a class="uk-modal-close uk-close"></a>
+            </div>
+        </div>        
+        <span class="markdown">
+            <textarea data-uk-htmleditor="{mode:'split', maxsplitsize:600, markdown:true}"></textarea>
+        </span>
+    </body>
+</html>
