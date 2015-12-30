@@ -1,8 +1,4 @@
-~~~.php
-
-echo "hello world";
-
-~~~
+![Screenshot](/home/dennis/Desktop/electron-markdown.png)
 
 # Electron markdown editor
 
