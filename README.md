@@ -1,4 +1,4 @@
-![Screenshot](/home/dennis/Desktop/electron-markdown.png)
+![Screenshot](electron-markdown.png)
 
 # Electron markdown editor
 
