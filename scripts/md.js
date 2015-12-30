@@ -1,9 +1,8 @@
 'use strict';
 
-
-// var hljs = require('highlight.js');
+var hljs = require('highlight.js');
 var md = require('markdown-it')({
-    /* 
+     
     highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -16,7 +15,7 @@ var md = require('markdown-it')({
     } catch (__) {}
 
     return ''; // use external default escaping
-  },*/
+  },
     html: true, // Enable HTML tags in source
     xhtmlOut: true, // Use '/' to close single tags (<br />).
     // This is only for full CommonMark compatibility.

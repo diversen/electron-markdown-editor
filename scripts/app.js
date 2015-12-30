@@ -7,16 +7,16 @@ var delay = (function () {
 })();
 
 
-$(document).ready(function () {    
+$(document).ready(function () {
     $('.markdown').keyup(function () {
         delay(function () {
             console.log('Math reparsed');
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }, 2000);
-    }); 
+    });
 });
 
-// Read images from 'images' dir. 
+// Read images from 'images' dir.
 $(document).ready(function () {
     if (app.env === 'electron') {
         //var files = getFiles('images');
@@ -26,7 +26,7 @@ $(document).ready(function () {
         if(typeof markedit_helper === "undefined") {
             return;
         }
-        
+
         //checkoutFiles().then(createEpub)
         getImages().then(getVideos);
         //getAssets();
@@ -35,11 +35,11 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    // 
+    //
     $(".uk-modal-dialog").on('click', '.uikit-cm-image', function (event) {
-        
+
         event.preventDefault();
-        
+
         
         var href = $(this).attr('href');
         var title = $(this).attr('title');

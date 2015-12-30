@@ -14,6 +14,13 @@ $(document).ready(function () {
 });
 
 
+/**
+ * 
+ * @param {type} dir
+ * @param {type} files_
+ * @returns {@var;files_|Array}
+ */
+
 function getFiles(dir, files_) {
     files_ = files_ || [];
     var files = fs.readdirSync(dir);

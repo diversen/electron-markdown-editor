@@ -1,3 +1,9 @@
+~~~.php
+
+echo "hello world";
+
+~~~
+
 # Electron markdown editor
 
 A nice electron markdown editor for the desktop using `electron`. 
@@ -12,7 +18,7 @@ Made with the `Uikit Htmleditor` - which offers a live preview using codemirror 
 # Install
 
     npm install -g electron-prebuilt
-    git clone github.com/diversen/electron-markdown-editor
+    git clone https://github.com/diversen/electron-markdown-editor
     cd electron-markdown-editor 
     npm install
     electron main.js
@@ -20,6 +26,10 @@ Made with the `Uikit Htmleditor` - which offers a live preview using codemirror 
 # Development
 
 Building of the `scripts/bundle.js` is done with `browserify` and `watchify`
+
+    watchify scripts/md.js -o scripts/bundle.js
+
+Or: 
 
     watchify scripts/md.js -o 'uglifyjs -cm > scripts/bundle.js'
 
