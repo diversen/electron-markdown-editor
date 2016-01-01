@@ -1,10 +1,10 @@
 {
   "name": "electron-markdown-editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "main.js",
-  "bin" : { 
-      "markdown-electron-editor" : "electron ./main.js"
+  "main": "app.js",
+  "bin": {
+    "markdown-electron-editor": "./bin/electron-markdown-editor"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.10.0",
+    "electron-prebuilt": "^0.36.2",
     "electron-window": "^0.6.2",
     "highlight.js": "^9.0.0",
     "jquery": "^2.1.4",
