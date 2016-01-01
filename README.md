@@ -2,18 +2,23 @@
 
 ## Screenshot
 
-![Screenshot](electron-markdown.png)
+[<img src="electron-logo.svg" align="right" width="100">](http://electron.atom.io)
 
-A nice electron markdown editor for the desktop using `electron`. 
+A markdown editor for the desktop using:
 
-Made with the `Uikit Htmleditor` - which offers a live preview using codemirror as the editor. There is also  added some extra features:
+* [Electron](http://electron.atom.io/)
+* The CSS frammework [Uikit](http://getuikit.com/) 
+* The Uikit [HTML-editor](http://getuikit.com/docs/htmleditor.html)
 
-* The ability to insert images / and mp4 movies using electrons file dialog. 
-* Live preview of code highlighting - using highlight.js
-* Live preview of mathjax - using mathjax.js
-* The parsing of markdown is done using markdown-it
+## Features
 
-# Install
+* WYSIWYG
+* The ability to insert images / and mp4 movies using electron file dialog. 
+* Live preview of code [highlight.js](https://highlightjs.org/)
+* Live preview of Math [MathJax](https://www.mathjax.org/)
+* The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
+
+## Install
 
     npm install -g electron-prebuilt
     git clone https://github.com/diversen/electron-markdown-editor
@@ -21,7 +26,7 @@ Made with the `Uikit Htmleditor` - which offers a live preview using codemirror 
     npm install
     electron main.js
 
-# Development
+## Development
 
 Building of the `scripts/bundle.js` is done with `browserify` and `watchify`
 
@@ -31,7 +36,7 @@ Or:
 
     watchify scripts/md.js -o 'uglifyjs -cm > scripts/bundle.js'
 
-# Build
+## Build
 
     Build for win32. See `build.sh`
 
