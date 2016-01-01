@@ -17,5 +17,5 @@ app.on('ready', function() {
         }
     );
     mainWindow.setMenu(null);
-    mainWindow.loadUrl('file://' + __dirname + '/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/index.html');
 });

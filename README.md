@@ -1,6 +1,8 @@
-![Screenshot](electron-markdown.png)
-
 # Electron markdown editor
+
+## Screenshot
+
+![Screenshot](electron-markdown.png)
 
 A nice electron markdown editor for the desktop using `electron`. 
 
