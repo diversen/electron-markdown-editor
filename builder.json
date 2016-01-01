@@ -1,7 +1,15 @@
 {
-
+  "osx" : {
+    "title" : "Electron Markdown Editor",
+    "icon": "assets/osx/icon.icns",
+    "icon-size": 80,
+    "contents": [
+      { "x": 438, "y": 344, "type": "link", "path": "/Applications" },
+      { "x": 192, "y": 344, "type": "file" }
+    ]
+  },
   "win" : {
-    "title" : "electron-markdown-editor",
+    "title" : "Electron Markdown Editor",
     "version" : "1.0.0",
     "icon" : "assets/icon.ico"
   }
