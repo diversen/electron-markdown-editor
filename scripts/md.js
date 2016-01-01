@@ -1,9 +1,8 @@
 'use strict';
 
 var hljs = require('highlight.js');
-var md = require('markdown-it')({
-     
-    highlight: function (str, lang) {
+
+var highlighter = function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
         return hljs.highlight(lang, str).value;
@@ -15,7 +14,11 @@ var md = require('markdown-it')({
     } catch (__) {}
 
     return ''; // use external default escaping
-  },
+  };
+
+var md = require('markdown-it')({
+    
+    highlight: highlighter, 
     html: true, // Enable HTML tags in source
     xhtmlOut: true, // Use '/' to close single tags (<br />).
     // This is only for full CommonMark compatibility.
@@ -33,15 +36,17 @@ var md = require('markdown-it')({
     // and ['«\xA0', '\xA0»', '‹\xA0', '\xA0›'] for French (including nbsp).
     quotes: '“”‘’'
 })
-        .use(require('markdown-it-html5-embed'), {
-            html5embed: {
-                useImageSyntax: true, // Enables video/audio embed with ![]() syntax (default) 
-                // useLinkSyntax: true,   // Enables video/audio embed with []() syntax
-                attributes: {
-                    'audio': 'width="100%" controls class="audioplayer"',
-                    'video': 'width="100%" class="audioplayer" controls'
-                }
+
+.use(require('markdown-it-html5-embed'), {
+    html5embed: {
+        useImageSyntax: true, // Enables video/audio embed with ![]() syntax (default) 
+            // useLinkSyntax: true,   // Enables video/audio embed with []() syntax
+            attributes: {
+                'audio': 'width="100%" controls class="audioplayer"',
+                'video': 'width="100%" class="audioplayer" controls'
             }
-        });
+        }
+    }
+);
 
 window.md = md;
