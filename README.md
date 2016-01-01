@@ -2,6 +2,8 @@
 
 ## Screenshot
 
+![Screenshot](electron-markdown.png)
+
 [<img src="electron-logo.svg" align="right" width="100">](http://electron.atom.io)
 
 A markdown editor for the desktop using:
