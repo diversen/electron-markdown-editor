@@ -4,7 +4,7 @@
 
 ![Screenshot](electron-markdown.png)
 
-[<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/electron-logo.svg" align="right" width="100">](http://electron.atom.io)
+[<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
 A markdown editor for the desktop using:
 
