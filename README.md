@@ -22,6 +22,12 @@ A markdown editor for the desktop using:
 
 ## Install
 
+From npm
+
+    // Global
+    sudo npm install electron-markdown-editor -g
+
+    // Development    
     npm install -g electron-prebuilt
     git clone https://github.com/diversen/electron-markdown-editor
     cd electron-markdown-editor 
