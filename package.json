@@ -1,15 +1,27 @@
 {
   "name": "electron-markdown-editor",
   "version": "1.0.1",
-  "description": "",
+  "description": "A markdown editor built with electron, uikit, and markdown-it",
+  "keywords": [
+    "markdown",
+    "editor",
+    "electron",
+    "commonmark",
+    "markdown-it",
+    "uikit"
+  ],
   "main": "app.js",
   "bin": {
-    "markdown-electron-editor": "./bin/electron-markdown-editor"
+    "electron-markdown-editor": "./bin/electron-markdown-editor"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diversen/electron-markdown-editor.git"
+  },
+  "author": "Dennis Iversen",
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.10.0",

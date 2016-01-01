@@ -1,8 +1,6 @@
 var app = require('app');
-// var BrowserWindow = require('browser-window');
 
 var window = require('electron-window');
-
 process.argv.forEach(function (val, index, array) {
    console.log(index + ': ' + val);
  });
@@ -23,7 +21,4 @@ app.on('ready', function() {
     
     mainWindow.setMenu(null);
     mainWindow.showUrl(__dirname + '/index.html', args);
-    // mainWindow.loadURL('file://' + __dirname + '/index.html', args);
-    // mainWindow.showUrl(__dirname + '/index.html', args);
-
 });

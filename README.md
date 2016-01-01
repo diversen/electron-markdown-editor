@@ -2,9 +2,9 @@
 
 ## Screenshot
 
-![Screenshot](electron-markdown.png)
+![Screenshot](assets/electron-markdown.png)
 
-[<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
+[<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/assets/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
 A markdown editor for the desktop using:
 
@@ -42,4 +42,10 @@ Or:
 
     Build for win32. See `build.sh`
 
-The final installer file is quite large as the system uses mathjax which takes up about 175MB or so. 
+The final installer file is quite large as the system uses mathjax which takes up about 175MB or so.
+
+## Notes
+
+About creating a npm bin file, when doing `npm install electron-markdown-editor -g`. 
+
+http://blog.soulserv.net/building-a-package-featuring-electron-as-a-stand-alone-application/
