@@ -28,11 +28,11 @@ From npm
     sudo npm install electron-markdown-editor -g
 
     // Development    
-    npm install -g electron-prebuilt
+    sudo npm install electron-prebuilt -g
     git clone https://github.com/diversen/electron-markdown-editor
     cd electron-markdown-editor 
     npm install
-    electron main.js
+    electron app.js
 
 ## Development
 
