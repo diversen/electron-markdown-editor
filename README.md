@@ -57,7 +57,7 @@ Build for win32. Run:
 
     ./win-build.sh
 
-Build for osX (there are some problems as I don't have a proper osX compouter .)
+Build for osX (there are some problems as I don't have a proper osX computer .)
 
 Run:
 
