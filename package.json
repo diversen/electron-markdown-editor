@@ -28,6 +28,7 @@
     "electron-prebuilt": "^0.36.2",
     "electron-window": "^0.6.2",
     "highlight.js": "^9.0.0",
+    "isbinaryfile": "^3.0.0",
     "jquery": "^2.1.4",
     "markdown-it": "^5.0.2",
     "markdown-it-html5-embed": "^0.3.2",

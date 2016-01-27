@@ -1,9 +1,17 @@
 var app = require('app');
-
+var args = [];
 var window = require('electron-window');
+var readFile = null;
+
 process.argv.forEach(function (val, index, array) {
-   console.log(index + ': ' + val);
+
+   if (index == 2) {
+       readFile = val;
+   } else {
+       readfile = null;
+   }
  });
+
 
 app.on('ready', function() {
     
@@ -16,7 +24,7 @@ app.on('ready', function() {
     
     var mainWindow = window.createWindow(options);   
     var args = {
-        data: 'some secret data'
+        file: readFile
     };
     
     mainWindow.setMenu(null);

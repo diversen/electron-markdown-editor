@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 var electronPath = require( 'electron-prebuilt' ) ;
-console.log(electronPath);
 
 var childProcess = require( 'child_process' ) ;
 

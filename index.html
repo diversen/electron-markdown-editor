@@ -10,9 +10,6 @@
         <script>
             // Only electron menu - if env is electron
             if (app.env === 'electron'){
-                // require('electron-window').parseArgs();
-                console.log(window.__args__)
-        //        alert(window.args);
                 document.write('<script src="scripts/menu.js"><\/script>');
             }
 
@@ -33,7 +30,7 @@
                     return true;
                 }
                 return false;
-            }
+            };
 
             // Prevent default click 'a' event
             if (app.env === 'electron'){
@@ -46,6 +43,16 @@
                     }
                 });
             }
+            
+            // Read file if given from commandline
+            $(document).ready(function () {
+                if (app.env === 'electron'){     
+                    var isBinaryFile = require("isbinaryfile");
+                    if (!isBinaryFile.sync(__args__.file)) {
+                        readMarkdownFile(__args__.file);
+                    }
+                }
+            });
 
         </script>
         <!-- We use uikit and the uikit components: notify, htmleditor

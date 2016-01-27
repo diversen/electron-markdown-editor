@@ -22,17 +22,24 @@ A markdown editor for the desktop using:
 
 ## Install
 
-From npm
+Use npm:
 
-    // Global
+Global: 
+
     sudo npm install electron-markdown-editor -g
+    electron-markdown-editor README.md
 
-    // Development    
+Development: 
+	   
     sudo npm install electron-prebuilt -g
     git clone https://github.com/diversen/electron-markdown-editor
     cd electron-markdown-editor 
     npm install
-    electron app.js
+    ./bin/electron-markdown-editor README.md
+    
+or (this option does not calculate added file from commandline correct) 
+
+	electron app.js 
 
 ## Development
 
@@ -46,9 +53,17 @@ Or:
 
 ## Build
 
-    Build for win32. See `build.sh`
+Build for win32. Run:
 
-The final installer file is quite large as the system uses mathjax which takes up about 175MB or so.
+    ./win-build.sh
+
+Build for osX (there are some problems as I don't have a proper osX compouter .)
+
+Run:
+
+	./osx-build.sh
+
+The final installer file is quite large as the system uses mathjax which takes up about 175MB or so. It will take a good amount of time. 30 minutes or so. 
 
 ## Notes
 

@@ -35,3 +35,5 @@ Electron\ Markdown\ Editor-win32-x64
 Electron\ Markdown\ Editor-darwin-x64
 
 dist
+
+bower_components
