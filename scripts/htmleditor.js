@@ -500,6 +500,10 @@
             editor.on('action.video', function() {
                 videoFn();
             });
+            
+            editor.on('action.table', function() {
+                tableFn();
+            });
 
             editor.on('action.listUl', function() {
                 listfn();
@@ -509,9 +513,7 @@
                 listfn();
             });
             
-            editor.on('action.table', function() {
-                tableFn();
-            });
+            
 
             editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
                 editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
@@ -603,6 +605,22 @@
                 }
                 
             });
+            
+            editor.on('action.table', function () {
+
+
+                if (editor.getCursorMode() == 'markdown') {
+                    
+                    var cm      = editor.editor,
+                        pos     = cm.getDoc().getCursor(true),
+                        posend  = cm.getDoc().getCursor(false);
+
+                    store.pos = pos;
+
+                    cm.focus();
+                }
+                
+            });
 
             editor.on('action.listUl', function() {
                 console.log('listUl - editor on');
@@ -648,12 +666,7 @@
                     cm.focus();
                 }
             });
-            
-            /*
-            editor.on('action.table', function() {
-                
-            });
-            */
+
             editor.on('renderLate', function() {
                 if (editor.editor.options.mode == 'gfm') {
                     editor.currentvalue = parser.render(editor.currentvalue);

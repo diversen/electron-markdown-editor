@@ -164,7 +164,11 @@ function openImageFile() {
             editor.refresh();
 
             var doc = editor.getDoc();
+            
+            
             doc.setCursor(store.pos);
+
+            
             editor.focus();
 
             var text = '![' + title + '](' + fileName + ")";

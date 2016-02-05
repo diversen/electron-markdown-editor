@@ -46,10 +46,7 @@ $(document).ready(function () {
         editor.refresh();
 
         var doc = editor.getDoc();
-        
-        if (store.pos === undefined) {
-            store.pos = { line: 0, ch: 0};
-        }
+
         
         doc.setCursor(store.pos);
         editor.focus();
@@ -81,10 +78,9 @@ $(document).ready(function () {
         editor.refresh();
 
         var doc = editor.getDoc();
+
         
-        if (store.pos === undefined) {
-            store.pos = { line: 0, ch: 0};
-        }
+
         
         doc.setCursor(store.pos);
         editor.focus();
@@ -113,14 +109,15 @@ $(document).ready(function () {
         
         var text = mdtable.create(rows, cols);
 
+        text = text.replace(/^\s+|\s+$/g, '');
+        
         var editor = $('.CodeMirror')[0].CodeMirror;
         editor.refresh();
 
         var doc = editor.getDoc();
+
         
-        if (store.pos === undefined) {
-            store.pos = { line: 0, ch: 0};
-        }
+        console.log(store.pos);
         
         doc.setCursor(store.pos);
         editor.focus();
