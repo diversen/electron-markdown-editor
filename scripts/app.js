@@ -115,9 +115,6 @@ $(document).ready(function () {
         editor.refresh();
 
         var doc = editor.getDoc();
-
-        
-        console.log(store.pos);
         
         doc.setCursor(store.pos);
         editor.focus();
