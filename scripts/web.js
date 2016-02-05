@@ -3,7 +3,7 @@ function getImages() {
     var url = '/image/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
     
     return $.getJSON(url, function (data) {
-        $('.image-modal').append('<i class="fa fa-picture-o"></i></i><hr />');
+        $('.image-modal').append('<i class="fa fa-picture-o"></i><hr />');
         $.each(data.images, function (i, item) {
             //console.log(item);
             var a = $('<a></a>').attr('href', item.url_m).attr('title', item.title).attr('class', 'uikit-cm-image uk-thumbnail');
@@ -25,7 +25,7 @@ var videoTemplate =
 function getVideos() {
     var url = '/video/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
     return $.getJSON(url, function (data) {
-        $('.video-modal').append('<hr /><i class="fa fa-video-camera"></i><hr />');
+        $('.video-modal').append('<i class="fa fa-video-camera"></i><hr />');
         $.each(data.videos, function (i, item) {            
             $('.video-modal').append(TemplateEngine(videoTemplate, {
                 title:item.mp4, href:item.mp4, abstract:item.abstract}));
