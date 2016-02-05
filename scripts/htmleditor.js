@@ -30,7 +30,7 @@
             height       : 500,
             maxsplitsize : 1000,
             codemirror   : { mode: 'htmlmixed', lineWrapping: true, dragDrop: false, autoCloseTags: true, matchTags: true, autoCloseBrackets: true, matchBrackets: true, indentUnit: 4, indentWithTabs: false, tabSize: 4, hintOptions: {completionSingle:false} },
-            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'blockquote', 'listUl', 'listOl' ],
+            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'blockquote', 'listUl', 'listOl', 'table' ],
             lblPreview   : 'Preview',
             lblCodeview  : 'HTML',
             lblMarkedview: 'Markdown'
@@ -433,6 +433,10 @@
                 listOl : {
                     title  : 'Ordered List',
                     label  : '<i class="uk-icon-list-ol"></i>'
+                },
+                table : {
+                    title  : 'Table',
+                    label  : '<i class="uk-icon-table"></i>'
                 }
 
             });
@@ -442,16 +446,22 @@
             addAction('strike', '<del>$1</del>');
             addAction('blockquote', '<blockquote><p>$1</p></blockquote>', 'replaceLine');
             addAction('link', '<a href="http://">$1</a>');
-            //addAction('image', '<img src="http://" alt="$1">');
 
             var imageFn = function () {
-                console.log('imageFn');
                 if (app.env == 'electron'){
                     openMediaFile();
                 } else {
-                    $.UIkit.modal("#my-id").show();
+                    $.UIkit.modal("#image-modal").show();
                 }
             };
+            
+            var tableFn = function () {
+                // console.log('tableFn');   
+                $.UIkit.modal("#table-modal").show();
+                // $.UIkit.modal("#table-modal").show();
+
+            };
+            
             
             var listfn = function() {
                 console.log('listFn');
@@ -481,6 +491,10 @@
 
             editor.on('action.listOl', function() {
                 listfn();
+            });
+            
+            editor.on('action.table', function() {
+                tableFn();
             });
 
             editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
@@ -544,7 +558,6 @@
 
             editor.on('action.image', function () {
 
-                console.log('image - editor on');
 
                 if (editor.getCursorMode() == 'markdown') {
                     
@@ -554,7 +567,6 @@
 
                     store.pos = pos;
 
-                    console.log(pos);
                     cm.focus();
                 }
                 
@@ -604,7 +616,12 @@
                     cm.focus();
                 }
             });
-
+            
+            /*
+            editor.on('action.table', function() {
+                
+            });
+            */
             editor.on('renderLate', function() {
                 if (editor.editor.options.mode == 'gfm') {
                     editor.currentvalue = parser.render(editor.currentvalue);
@@ -656,13 +673,4 @@
     });
 
     return UI.htmleditor;
-})
-/*
-$(document).ready(function () {
-// 
-// a[data-htmleditor-button='bold']
-
-    $( "ul.uk-htmleditor-navbar-nav li" ).click(function () {
-        alert('hello');
-    });
-});*/
+});

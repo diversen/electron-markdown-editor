@@ -12,7 +12,8 @@ rm -rf ./Electron\ Markdown\ Editor-win32-x64
 rm -rf ./dist
 
 mkdir -p ./dist
+mkdir ./Electron\ Markdown\ Editor-win32-x64
 
-electron-packager . 'Electron Markdown Editor' --platform=win32 --arch=x64 --version=0.34.0
+electron-packager . 'Electron Markdown Editor' --platform=win32 --arch=x64 --version=0.36.5
 electron-builder ./Electron\ Markdown\ Editor-win32-x64 --platform=win --out=./dist --config=./builder.json
 

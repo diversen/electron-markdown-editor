@@ -32,9 +32,11 @@
     "jquery": "^2.1.4",
     "markdown-it": "^5.0.2",
     "markdown-it-html5-embed": "^0.3.2",
+    "markdown-table-template": "^1.0.1",
     "mathjax": "^2.5.1",
     "open": "0.0.5",
     "relative": "^3.0.2",
+    "translate.js": "^0.4.1",
     "uikit": "^2.24.3"
   }
 }

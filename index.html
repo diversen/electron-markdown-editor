@@ -22,7 +22,7 @@
             if (app.env === 'electron'){
                 window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.js');
             } else {
-                document.write('<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"><\/script>');
+                document.write('<script src="https://code.jquery.com/jquery-2.1.4.min.js"><\/script>');
             }
 
             var isDefined = function (attr) {
@@ -48,8 +48,10 @@
             $(document).ready(function () {
                 if (app.env === 'electron'){     
                     var isBinaryFile = require("isbinaryfile");
-                    if (!isBinaryFile.sync(__args__.file)) {
-                        readMarkdownFile(__args__.file);
+                    if (__args__.file !== null) {
+                        if (!isBinaryFile.sync(__args__.file)) {
+                            readMarkdownFile(__args__.file);
+                        }
                     }
                 }
             });
@@ -72,7 +74,7 @@
         <script src="node_modules/codemirror/addon/mode/overlay.js"></script>
         <script src="node_modules/codemirror/mode/xml/xml.js"></script>
         <script src="node_modules/codemirror/mode/gfm/gfm.js"></script>
-
+        
         <!-- Mathjax config -->
         <script src="node_modules/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
@@ -88,7 +90,9 @@
         </script>
 
         <!-- Modified version of UIKIT htmleditor -->
-        <script src="scripts/files-web.js"></script>
+        <!--<script src="scripts/files-web.js"></script>-->
+        <script src ="./node_modules/markdown-table-template/dist/mdtable.js"></script>
+        
         <script src="scripts/app.js"></script>
 
         <script src="scripts/bundle.js"></script>
@@ -103,17 +107,35 @@
 
             // File browsing
             if (app.env === 'electron'){
-                document.write('<script type="text/javascript" src="scripts/files.js"><\/script>');
+                document.write('<script type="text/javascript" src="scripts/electron.js"><\/script>');
             } else {
-                document.write('<script type="text/javascript" src="scripts/files-web.js"><\/script>');
+                document.write('<script type="text/javascript" src="scripts/web.js"><\/script>');
             }
 
         </script>
     </head>
     <body>
-        <div id="my-id" class="uk-modal">
+        <div id="image-modal" class="uk-modal">
             <div class="uk-modal-dialog">
                 <a class="uk-modal-close uk-close"></a>
+            </div>
+        </div>
+        
+        <div id="table-modal" class="uk-modal">
+            <div class="uk-modal-dialog">
+                <a class="uk-modal-close uk-close"></a>
+                <form class="uk-form table-form">
+
+                    <fieldset data-uk-margin>
+                        <legend>Tabel</legend>
+                        <input type="text" class ="table-rows" placeholder="rækker">
+                        <input type="text" class= "table-cols" placeholder="coloner">
+                        <button class="uk-button">Send</button>
+
+                    </fieldset>
+
+                </form>
+                
             </div>
         </div>
         

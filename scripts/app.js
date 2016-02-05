@@ -40,7 +40,6 @@ $(document).ready(function () {
 
         event.preventDefault();
 
-        
         var href = $(this).attr('href');
         var title = $(this).attr('title');
         if (typeof title == 'undefined') {
@@ -51,6 +50,11 @@ $(document).ready(function () {
         editor.refresh();
 
         var doc = editor.getDoc();
+        
+        if (store.pos === undefined) {
+            store.pos = { line: 0, ch: 0};
+        }
+        
         doc.setCursor(store.pos);
         editor.focus();
 
@@ -58,12 +62,47 @@ $(document).ready(function () {
 
         insertLine(doc, store.pos, text);
 
-        var modal = UIkit.modal("#my-id");
+        var modal = UIkit.modal("#image-modal");
         modal.hide();
 
         return false;
     });
 });
+
+$(document).ready(function () {
+    
+    $(".table-form").submit(function (e) {
+        e.preventDefault();
+        var rows = $(".table-rows").val();
+        var cols = $(".table-cols").val();
+        
+        // Insure it is ints
+        rows = parseInt(rows);
+        cols = parseInt(cols);
+        
+        var text = mdtable.create(rows, cols);
+
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+        
+        if (store.pos === undefined) {
+            store.pos = { line: 0, ch: 0};
+        }
+        
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        insertLine(doc, store.pos, text);
+
+        var modal = UIkit.modal("#table-modal");
+        modal.hide();
+
+        return false;
+    });
+});
+
 
 var insertLine = function (doc, pos, text) {
     var cursor = doc.getCursor(); // gets the line number in the cursor position

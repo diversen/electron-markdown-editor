@@ -53,17 +53,17 @@ Or:
 
 ## Build
 
-Build for win32. Run:
+Build for win32. (highly experimental)
 
     ./win-build.sh
 
-Build for osX (there are some problems as I don't have a proper osX computer .)
+Build for osX (highly experimental)
 
 Run:
 
 	./osx-build.sh
 
-The final installer file is quite large as the system uses mathjax which takes up about 175MB or so. It will take a good amount of time. 30 minutes or so. 
+The final installer file is quite large as the system uses mathjax which takes up about 20MB or so. It will take a good amount of time. 30 minutes or so. (On a quite old computer). 
 
 ## Notes
 
