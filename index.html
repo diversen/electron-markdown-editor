@@ -91,11 +91,11 @@
 
         <!-- Modified version of UIKIT htmleditor -->
         <!--<script src="scripts/files-web.js"></script>-->
-        <script src ="./node_modules/markdown-table-template/dist/mdtable.js"></script>
-        
+        <script src ="./node_modules/markdown-table-template/dist/mdtable.js"></script> 
         <script src="scripts/app.js"></script>
 
         <script src="scripts/bundle.js"></script>
+        <!--<script src="scripts/md.js"></script>-->
         <script src="scripts/htmleditor.js"></script>
         <script src="scripts/store.js"></script>
 
@@ -116,7 +116,13 @@
     </head>
     <body>
         <div id="image-modal" class="uk-modal">
-            <div class="uk-modal-dialog">
+            <div class="uk-modal-dialog image-modal">
+                <a class="uk-modal-close uk-close"></a>
+            </div>
+        </div>
+        
+        <div id="video-modal" class="uk-modal">
+            <div class="uk-modal-dialog video-modal">
                 <a class="uk-modal-close uk-close"></a>
             </div>
         </div>
@@ -131,7 +137,6 @@
                         <input type="text" class ="table-rows" placeholder="Rows">
                         <input type="text" class= "table-cols" placeholder="Columns">
                         <button class="uk-button">Send</button>
-
                     </fieldset>
 
                 </form>

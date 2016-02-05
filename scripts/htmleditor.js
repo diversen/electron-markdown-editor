@@ -30,7 +30,7 @@
             height       : 500,
             maxsplitsize : 1000,
             codemirror   : { mode: 'htmlmixed', lineWrapping: true, dragDrop: false, autoCloseTags: true, matchTags: true, autoCloseBrackets: true, matchBrackets: true, indentUnit: 4, indentWithTabs: false, tabSize: 4, hintOptions: {completionSingle:false} },
-            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'blockquote', 'listUl', 'listOl', 'table' ],
+            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'video', 'blockquote', 'listUl', 'listOl', 'table' ],
             lblPreview   : 'Preview',
             lblCodeview  : 'HTML',
             lblMarkedview: 'Markdown'
@@ -426,6 +426,10 @@
                     title  : 'Image',
                     label  : '<i class="uk-icon-picture-o"></i>'
                 },
+                video : {
+                    title  : 'Video',
+                    label  : '<i class="uk-icon-video-camera"></i>'
+                },
                 listUl : {
                     title  : 'Unordered List',
                     label  : '<i class="uk-icon-list-ul"></i>'
@@ -449,9 +453,17 @@
 
             var imageFn = function () {
                 if (app.env == 'electron'){
-                    openMediaFile();
+                    openImageFile();
                 } else {
                     $.UIkit.modal("#image-modal").show();
+                }
+            };
+            
+            var videoFn = function () {
+                if (app.env == 'electron'){
+                    openVideoFile();
+                } else {
+                    $.UIkit.modal("#video-modal").show();
                 }
             };
             
@@ -483,6 +495,10 @@
             
             editor.on('action.image', function() {
                 imageFn();
+            });
+            
+            editor.on('action.video', function() {
+                videoFn();
             });
 
             editor.on('action.listUl', function() {
@@ -557,6 +573,22 @@
             addAction('link', '[$1](http://)');
 
             editor.on('action.image', function () {
+
+
+                if (editor.getCursorMode() == 'markdown') {
+                    
+                    var cm      = editor.editor,
+                        pos     = cm.getDoc().getCursor(true),
+                        posend  = cm.getDoc().getCursor(false);
+
+                    store.pos = pos;
+
+                    cm.focus();
+                }
+                
+            });
+            
+            editor.on('action.video', function () {
 
 
                 if (editor.getCursorMode() == 'markdown') {

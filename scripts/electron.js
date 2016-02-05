@@ -150,8 +150,31 @@ function saveFileAs() {
     });
 }
 
-function openMediaFile() {
+function openImageFile() {
     dialog.showOpenDialog({filters: [{name: 'Insert image', extensions: ['jpg', 'gif','svg','png','mp4']}]}, 
+        function (fileNames) {
+            if (fileNames === undefined) {
+                return;
+            }
+
+            var fileName = fileNames[0];
+            title = 'title';
+
+            var editor = $('.CodeMirror')[0].CodeMirror;
+            editor.refresh();
+
+            var doc = editor.getDoc();
+            doc.setCursor(store.pos);
+            editor.focus();
+
+            var text = '![' + title + '](' + fileName + ")";
+
+            insertLine(doc, store.pos, text);
+    });
+}
+
+function openVideoFile() {
+    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['mp4']}]}, 
         function (fileNames) {
             if (fileNames === undefined) {
                 return;

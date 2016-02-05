@@ -1,5 +1,6 @@
 'use strict';
 
+/*
 var hljs = require('highlight.js');
 
 var highlighter = function (str, lang) {
@@ -15,10 +16,10 @@ var highlighter = function (str, lang) {
 
     return ''; // use external default escaping
   };
-
+*/
 var md = require('markdown-it')({
     
-    highlight: highlighter, 
+    // highlight: highlighter, 
     html: true, // Enable HTML tags in source
     xhtmlOut: true, // Use '/' to close single tags (<br />).
     // This is only for full CommonMark compatibility.

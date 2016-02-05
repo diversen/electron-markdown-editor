@@ -15,8 +15,10 @@ A markdown editor for the desktop using:
 ## Features
 
 * WYSIWYG
-* The ability to insert images / and mp4 movies using electron file dialog. 
-* Live preview of code [highlight.js](https://highlightjs.org/)
+* Dialog for image
+* Dialog for mp4
+* Dialog for tables
+* ~~Live preview of code [highlight.js](https://highlightjs.org/)~~ (removed as it takes up 500KB in the bundle.js)
 * Live preview of Math [MathJax](https://www.mathjax.org/)
 * The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
 
@@ -27,6 +29,9 @@ Use npm:
 Global: 
 
     sudo npm install electron-markdown-editor -g
+    
+You can specify one file on the commandline. E.g.: 
+    
     electron-markdown-editor README.md
 
 Development: 

@@ -3,18 +3,17 @@ function getImages() {
     var url = '/image/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
     
     return $.getJSON(url, function (data) {
-        $('.uk-modal-dialog').append('<i class="fa fa-picture-o"></i></i><hr />');
+        $('.image-modal').append('<i class="fa fa-picture-o"></i></i><hr />');
         $.each(data.images, function (i, item) {
             //console.log(item);
             var a = $('<a></a>').attr('href', item.url_m).attr('title', item.title).attr('class', 'uikit-cm-image uk-thumbnail');
             var img = $('<img />').attr('src', item.url_s);
             a.append(img);
-            $('.uk-modal-dialog').append(a);
+            $('.image-modal').append(a);
 
         });
     });
 }
-
 
 var videoTemplate = 
         '<a title="<%this.abstract%>" href="<%this.title%>" class="uk-thumbnail uikit-cm-image">' +
@@ -23,19 +22,12 @@ var videoTemplate =
               ' Your browser does not support HTML5 video.' +
         '</video></a>';
 
-
-function getVideoJson () {
-    
-}
-
 function getVideos() {
     var url = '/video/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
     return $.getJSON(url, function (data) {
-        $('.uk-modal-dialog').append('<hr /><i class="fa fa-video-camera"></i><hr />');
-        $.each(data.videos, function (i, item) {
-            console.log(item);
-            
-            $('.uk-modal-dialog').append(TemplateEngine(videoTemplate, {
+        $('.video-modal').append('<hr /><i class="fa fa-video-camera"></i><hr />');
+        $.each(data.videos, function (i, item) {            
+            $('.video-modal').append(TemplateEngine(videoTemplate, {
                 title:item.mp4, href:item.mp4, abstract:item.abstract}));
         });
     });

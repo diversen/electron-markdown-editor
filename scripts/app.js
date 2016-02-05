@@ -19,24 +19,20 @@ $(document).ready(function () {
 // Read images from 'images' dir.
 $(document).ready(function () {
     if (app.env === 'electron') {
-        //var files = getFiles('images');
-        //var str = getFilesAsMd(files);
-        //$('.uk-modal-dialog').append(str);
+
     } else {
         if(typeof markedit_helper === "undefined") {
             return;
         }
-
-        //checkoutFiles().then(createEpub)
-        getImages().then(getVideos);
-        //getAssets();
+        getImages();
+        getVideos();
     }
 });
 
 
 $(document).ready(function () {
-    //
-    $(".uk-modal-dialog").on('click', '.uikit-cm-image', function (event) {
+
+    $(".image-modal").on('click', '.uikit-cm-image', function (event) {
 
         event.preventDefault();
 
@@ -63,6 +59,41 @@ $(document).ready(function () {
         insertLine(doc, store.pos, text);
 
         var modal = UIkit.modal("#image-modal");
+        modal.hide();
+
+        return false;
+    });
+});
+
+$(document).ready(function () {
+
+    $(".video-modal").on('click', '.uikit-cm-image', function (event) {
+
+        event.preventDefault();
+
+        var href = $(this).attr('href');
+        var title = $(this).attr('title');
+        if (typeof title == 'undefined') {
+            title = 'title';
+        }
+
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+        
+        if (store.pos === undefined) {
+            store.pos = { line: 0, ch: 0};
+        }
+        
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        var text = '![' + title + '](' + href + ")";
+
+        insertLine(doc, store.pos, text);
+
+        var modal = UIkit.modal("#video-modal");
         modal.hide();
 
         return false;
