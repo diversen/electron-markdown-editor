@@ -10,7 +10,6 @@ var delay = (function () {
 $(document).ready(function () {
     $('.markdown').keyup(function () {
         delay(function () {
-            console.log('Math reparsed');
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }, 2000);
     });

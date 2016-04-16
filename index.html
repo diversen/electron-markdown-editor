@@ -16,9 +16,8 @@
         </script>
         <script>
 
-            /*
-             * Load jQuery from modules or remote if browser
-             */
+          
+            // Load jQuery from modules or remote if browser   
             if (app.env === 'electron'){
                 window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.js');
             } else {
@@ -94,17 +93,20 @@
         <script src ="./node_modules/markdown-table-template/dist/mdtable.js"></script> 
         <script src="scripts/app.js"></script>
 
-        <script src="scripts/bundle.js"></script>
-        <!--<script src="scripts/md.js"></script>-->
+        <!--<script src="scripts/bundle.js"></script>-->
+        <script src="node_modules/markdown-it/dist/markdown-it.js"></script>
+        <script src="node_modules/markdown-it-html5-embed/dist/markdown-it-html5-embed.js"></script>
+        <script src="scripts/md.js"></script>
         <script src="scripts/htmleditor.js"></script>
         <script src="scripts/store.js"></script>
 
-        <!-- Highlight -->
-        <link rel="stylesheet" href="node_modules/highlight.js/styles/default.css">
-        <script src="node_modules/highlight.js/lib/highlight.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script>
+        <!-- Highlight.js Note: Can not make it work through npm -->
+        
+        <link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">
+        <script src="node_modules/highlightjs/highlight.pack.js"></script>
+        
         <script>
-
+        
             // File browsing
             if (app.env === 'electron'){
                 document.write('<script type="text/javascript" src="scripts/electron.js"><\/script>');

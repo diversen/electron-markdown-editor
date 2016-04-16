@@ -16,9 +16,9 @@ A markdown editor for the desktop using:
 
 * WYSIWYG
 * Dialog for image
-* Dialog for mp4
+* Dialog for videos (mp4)
 * Dialog for tables
-* ~~Live preview of code [highlight.js](https://highlightjs.org/)~~ (removed as it takes up 500KB in the bundle.js)
+* Live preview of code [highlight.js](https://highlightjs.org/)
 * Live preview of Math [MathJax](https://www.mathjax.org/)
 * The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
 
@@ -34,7 +34,7 @@ You can specify one file on the commandline. E.g.:
     
     electron-markdown-editor README.md
 
-Development: 
+## Development: 
 	   
     sudo npm install electron-prebuilt -g
     git clone https://github.com/diversen/electron-markdown-editor
@@ -44,17 +44,8 @@ Development:
     
 or (this option does not calculate added file from commandline correct) 
 
-	electron app.js 
+    electron app.js 
 
-## Development
-
-Building of the `scripts/bundle.js` is done with `browserify` and `watchify`
-
-    watchify scripts/md.js -o scripts/bundle.js
-
-Or: 
-
-    watchify scripts/md.js -o 'uglifyjs -cm > scripts/bundle.js'
 
 ## Build
 
@@ -75,3 +66,19 @@ The final installer file is quite large as the system uses mathjax which takes u
 About creating a npm bin file, when doing `npm install electron-markdown-editor -g`. 
 
 http://blog.soulserv.net/building-a-package-featuring-electron-as-a-stand-alone-application/
+
+
+## Obsolete
+
+Notes: 
+
+The next section is obsolete as the `electron-markdown-editor` now uses `dist` packages for packages. This is because it easier to just use this, when there is dist versions of all packages. It is also easier to move right to the web. 
+
+Building of the `scripts/bundle.js` is done with `browserify` and `watchify`
+
+    watchify scripts/md.js -o scripts/bundle.js
+
+Or: 
+
+    watchify scripts/md.js -o 'uglifyjs -cm > scripts/bundle.js'
+
