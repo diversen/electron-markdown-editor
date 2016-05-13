@@ -164,11 +164,7 @@ function openImageFile() {
             editor.refresh();
 
             var doc = editor.getDoc();
-            
-            
-            doc.setCursor(store.pos);
-
-            
+            doc.setCursor(store.pos);            
             editor.focus();
 
             var text = '![' + title + '](' + fileName + ")";
@@ -195,6 +191,29 @@ function openVideoFile() {
             editor.focus();
 
             var text = '![' + title + '](' + fileName + ")";
+
+            insertLine(doc, store.pos, text);
+    });
+}
+
+function openFileFile() {
+    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['*']}]}, 
+        function (fileNames) {
+            if (fileNames === undefined) {
+                return;
+            }
+
+            var fileName = fileNames[0];
+            title = 'title';
+
+            var editor = $('.CodeMirror')[0].CodeMirror;
+            editor.refresh();
+
+            var doc = editor.getDoc();
+            doc.setCursor(store.pos);
+            editor.focus();
+
+            var text = '[' + title + '](' + fileName + ")";
 
             insertLine(doc, store.pos, text);
     });

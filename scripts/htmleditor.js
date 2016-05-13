@@ -30,7 +30,7 @@
             height       : 500,
             maxsplitsize : 1000,
             codemirror   : { mode: 'htmlmixed', lineWrapping: true, dragDrop: false, autoCloseTags: true, matchTags: true, autoCloseBrackets: true, matchBrackets: true, indentUnit: 4, indentWithTabs: false, tabSize: 4, hintOptions: {completionSingle:false} },
-            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'video', 'blockquote', 'listUl', 'listOl', 'table' ],
+            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'video', 'file', 'blockquote', 'listUl', 'listOl', 'table' ],
             lblPreview   : 'Preview',
             lblCodeview  : 'HTML',
             lblMarkedview: 'Markdown'
@@ -430,6 +430,10 @@
                     title  : 'Video',
                     label  : '<i class="uk-icon-video-camera"></i>'
                 },
+                file : {
+                    title  : 'File',
+                    label  : '<i class="uk-icon-file"></i>'
+                },
                 listUl : {
                     title  : 'Unordered List',
                     label  : '<i class="uk-icon-list-ul"></i>'
@@ -467,6 +471,14 @@
                 }
             };
             
+            var fileFn = function () {
+                if (app.env == 'electron'){
+                    openFileFile();
+                } else {
+                    $.UIkit.modal("#file-modal").show();
+                }
+            };
+            
             var tableFn = function () {
                 // console.log('tableFn');   
                 $.UIkit.modal("#table-modal").show();
@@ -499,6 +511,10 @@
             
             editor.on('action.video', function() {
                 videoFn();
+            });
+            
+            editor.on('action.file', function() {
+                fileFn();
             });
             
             editor.on('action.table', function() {
@@ -591,6 +607,22 @@
             });
             
             editor.on('action.video', function () {
+
+
+                if (editor.getCursorMode() == 'markdown') {
+                    
+                    var cm      = editor.editor,
+                        pos     = cm.getDoc().getCursor(true),
+                        posend  = cm.getDoc().getCursor(false);
+
+                    store.pos = pos;
+
+                    cm.focus();
+                }
+                
+            });
+            
+            editor.on('action.file', function () {
 
 
                 if (editor.getCursorMode() == 'markdown') {
