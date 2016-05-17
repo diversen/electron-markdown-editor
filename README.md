@@ -18,15 +18,7 @@ A markdown editor for the desktop using:
 * Dialog for image
 * Dialog for videos (mp4)
 * Dialog for tables
-* Live preview of code [highlight.js](https://highlightjs.org/) e.g.:
-
-~~~php
-<?php
-
-echo "hello world";
-
-?>
-~~~
+* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles` ~~~ code ~~~
 
 * Live preview of Math [MathJax](https://www.mathjax.org/), e.g.:
 
