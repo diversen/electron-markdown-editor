@@ -18,8 +18,20 @@ A markdown editor for the desktop using:
 * Dialog for image
 * Dialog for videos (mp4)
 * Dialog for tables
-* Live preview of code [highlight.js](https://highlightjs.org/)
-* Live preview of Math [MathJax](https://www.mathjax.org/)
+* Live preview of code [highlight.js](https://highlightjs.org/) e.g.:
+
+~~~php
+<?php
+
+echo "hello world";
+
+?>
+~~~
+
+* Live preview of Math [MathJax](https://www.mathjax.org/), e.g.:
+
+$$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
+
 * The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
 
 ## Install
