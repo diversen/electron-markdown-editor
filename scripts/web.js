@@ -15,6 +15,24 @@ function getImages() {
     });
 }
 
+function getFiles() {
+    var url = '/files/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
+    
+    return $.getJSON(url, function (data) {
+        $('.file-modal').append('<i class="fa fa-file"></i><hr />');
+        $.each(data.files, function (i, item) {
+            //console.log(item);
+            if (item.title == '') {
+                item.title = item.url_m;
+            }
+            
+            item.title = item.title.replace(/^.*[\\\/]/, '');
+            var a = $('<a></a>').attr('href', item.url_m).attr('title', item.title).attr('class', 'uikit-cm-image uk-thumbnail').text(item.title);
+            $('.file-modal').append(a);
+        });
+    });
+}
+
 var videoTemplate = 
         '<a title="<%this.abstract%>" href="<%this.title%>" class="uk-thumbnail uikit-cm-image">' +
             '<video width="160" controls>' +
