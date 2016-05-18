@@ -23,8 +23,10 @@ $(document).ready(function () {
         if(typeof markedit_helper === "undefined") {
             return;
         }
+        
         getImages();
         getVideos();
+        getFiles();
     }
 });
 
@@ -55,6 +57,38 @@ $(document).ready(function () {
         insertLine(doc, store.pos, text);
 
         var modal = UIkit.modal("#image-modal");
+        modal.hide();
+
+        return false;
+    });
+});
+
+$(document).ready(function () {
+
+    $(".file-modal").on('click', '.uikit-cm-image', function (event) {
+
+        event.preventDefault();
+
+        var href = $(this).attr('href');
+        var title = $(this).attr('title');
+        if (typeof title == 'undefined') {
+            title = 'title';
+        }
+
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+
+        
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        var text = '[' + title + '](' + href + ")";
+
+        insertLine(doc, store.pos, text);
+
+        var modal = UIkit.modal("#file-modal");
         modal.hide();
 
         return false;

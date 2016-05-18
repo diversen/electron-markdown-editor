@@ -1,11 +1,19 @@
+function getSchemeAndUrl () {
+    var url = window.location.href;
+    var arr = url.split("/");
+    return arr[0] + "//" + arr[2];
+}
+
 
 function getImages() {
     var url = '/image/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
     
+    
     return $.getJSON(url, function (data) {
+        
         $('.image-modal').append('<i class="fa fa-picture-o"></i><hr />');
         $.each(data.images, function (i, item) {
-            //console.log(item);
+            
             var a = $('<a></a>').attr('href', item.url_m).attr('title', item.title).attr('class', 'uikit-cm-image uk-thumbnail');
             var img = $('<img />').attr('src', item.url_s);
             a.append(img);
@@ -17,6 +25,9 @@ function getImages() {
 
 function getFiles() {
     var url = '/files/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
+
+            var sAndU = getSchemeAndUrl();
+
     
     return $.getJSON(url, function (data) {
         $('.file-modal').append('<i class="fa fa-file"></i><hr />');
@@ -27,11 +38,13 @@ function getFiles() {
             }
             
             item.title = item.title.replace(/^.*[\\\/]/, '');
-            var a = $('<a></a>').attr('href', item.url_m).attr('title', item.title).attr('class', 'uikit-cm-image uk-thumbnail').text(item.title);
+            var a = $('<a></a>').attr('href', sAndU + item.url_m).attr('title', item.title).attr('class', 'uikit-cm-image uk-thumbnail').text(item.title);
             $('.file-modal').append(a);
         });
     });
 }
+
+
 
 var videoTemplate = 
         '<a title="<%this.abstract%>" href="<%this.title%>" class="uk-thumbnail uikit-cm-image">' +
