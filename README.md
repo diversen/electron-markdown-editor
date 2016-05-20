@@ -2,7 +2,7 @@
 
 ## Screenshot
 
-![Screenshot](assets/electron-markdown.png)
+![Screenshot](resources/electron-markdown.png)
 
 [<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/assets/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
