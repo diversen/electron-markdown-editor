@@ -1,6 +1,8 @@
 {
   "name": "electron-markdown-editor",
+  "productName": "ElectronMarkdownEditor",
   "version": "1.0.7",
+  "electronVersion": "0.33.6",
   "description": "A markdown editor built with electron, uikit, and markdown-it",
   "keywords": [
     "markdown",
@@ -15,7 +17,23 @@
     "electron-markdown-editor": "./bin/electron-markdown-editor"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "npm run clean:dist && npm run clean:source && npm run clean:target",
+    "clean:dist": "rm -rf ./dist",
+    "clean:source": "rm -rf ./node/ui/js/",
+    "clean:target": "rm -rf ./target/",
+    
+    "build": "npm run build:osx && npm run build:win && npm run build:linux",
+    
+    "build:osx": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version && node scripts/post-build-mac.js",
+    "build:win": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=win32 --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
+    "build:linux": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=linux --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version",
+    
+    "package": "npm run package:win32 && npm run package:win64 && npm run package:osx && npm run package:linux",
+    
+    "package:win64": "electron-builder dist/ElectronMarkdownEditor-win32-x64/ --platform=win --out=dist --config=config.json && mv 'dist/ElectronMarkdownEditor Setup.exe' dist/ElectronMarkdownEditor_Windows64.exe",
+    "package:win32": "electron-builder dist/ElectronMarkdownEditor-win32-ia32/ --platform=win --out=dist --config=config.json && mv 'dist/ElectronMarkdownEditor Setup.exe' dist/ElectronMarkdownEditor_Windows32.exe",
+    "package:osx": "hdiutil create -format UDZO -srcfolder dist/ElectronMarkdownEditor-darwin-x64/ElectronMarkdownEditor.app dist/ElectronMarkdownEditor_Mac.dmg",
+    "package:linux": "cd dist/ && zip -r ElectronMarkdownEditor_Linux_x64.zip ElectronMarkdownEditor-linux-x64 && zip -r ElectronMarkdownEditor_Linux_ia32.zip ElectronMarkdownEditor-linux-ia32 && cd ../"
   },
   "repository": {
     "type": "git",
@@ -35,6 +53,7 @@
     "markdown-table-template": "^1.0.1",
     "mathjax": "^2.5.1",
     "open": "0.0.5",
+    "plist": "^1.2.0",
     "relative": "^3.0.2",
     "translate.js": "^0.4.1",
     "uikit": "^2.24.3"
