@@ -17,10 +17,8 @@
     "electron-markdown-editor": "./bin/electron-markdown-editor"
   },
   "scripts": {
-    "clean": "npm run clean:dist && npm run clean:source && npm run clean:target",
+
     "clean:dist": "rm -rf ./dist",
-    "clean:source": "rm -rf ./node/ui/js/",
-    "clean:target": "rm -rf ./target/",
     
     "build": "npm run build:osx && npm run build:win && npm run build:linux",
     
@@ -28,8 +26,7 @@
     "build:win": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=win32 --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:linux": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=linux --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version",
     
-    "package": "npm run package:win32 && npm run package:win64 && npm run package:osx && npm run package:linux",
-    
+    "package": "npm run package:win32 && npm run package:win64 && npm run package:osx && npm run package:linux",    
     "package:win64": "electron-builder dist/ElectronMarkdownEditor-win32-x64/ --platform=win --out=dist --config=config.json && mv 'dist/ElectronMarkdownEditor Setup.exe' dist/ElectronMarkdownEditor_Windows64.exe",
     "package:win32": "electron-builder dist/ElectronMarkdownEditor-win32-ia32/ --platform=win --out=dist --config=config.json && mv 'dist/ElectronMarkdownEditor Setup.exe' dist/ElectronMarkdownEditor_Windows32.exe",
     "package:osx": "hdiutil create -format UDZO -srcfolder dist/ElectronMarkdownEditor-darwin-x64/ElectronMarkdownEditor.app dist/ElectronMarkdownEditor_Mac.dmg",
