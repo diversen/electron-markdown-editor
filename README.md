@@ -4,7 +4,7 @@
 
 ![Screenshot](resources/electron-markdown.png)
 
-[<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/assets/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
+[<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
 A markdown editor for the desktop using:
 
@@ -49,27 +49,6 @@ You can specify one file on the commandline. E.g.:
 or (this option does not calculate added file from commandline correct) 
 
     electron app.js 
-
-
-## Build
-
-Build for win32. (highly experimental)
-
-    ./win-build.sh
-
-Build for osX (highly experimental)
-
-Run:
-
-	./osx-build.sh
-
-The final installer file is quite large as the system uses mathjax which takes up about 20MB or so. It will take a good amount of time. 30 minutes or so. (On a quite old computer). 
-
-## Notes
-
-About creating a npm bin file, when doing `npm install electron-markdown-editor -g`. 
-
-http://blog.soulserv.net/building-a-package-featuring-electron-as-a-stand-alone-application/
 
 
 ## Obsolete
