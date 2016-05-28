@@ -40,28 +40,18 @@ You can specify one file on the commandline. E.g.:
 
 ## Development: 
 	   
+If you don't have electron-prebuilt: 
+
     sudo npm install electron-prebuilt -g
+
+Clone and install
+
     git clone https://github.com/diversen/electron-markdown-editor
     cd electron-markdown-editor 
     npm install
+
+Run electron-markdown-editor: 
+
     ./bin/electron-markdown-editor README.md
-    
-or (this option does not calculate added file from commandline correct) 
 
-    electron app.js 
-
-
-## Obsolete
-
-Notes: 
-
-The next section is obsolete as the `electron-markdown-editor` now uses `dist` packages for packages. This is because it easier to just use this, when there is dist versions of all packages. It is also easier to move right to the web. 
-
-Building of the `scripts/bundle.js` is done with `browserify` and `watchify`
-
-    watchify scripts/md.js -o scripts/bundle.js
-
-Or: 
-
-    watchify scripts/md.js -o 'uglifyjs -cm > scripts/bundle.js'
 
