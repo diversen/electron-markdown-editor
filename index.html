@@ -87,22 +87,23 @@
 
             });
         </script>
+        <link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">
 
         <!-- Modified version of UIKIT htmleditor -->
         <!--<script src="scripts/files-web.js"></script>-->
-        <script src ="./node_modules/markdown-table-template/dist/mdtable.js"></script> 
+        <script src ="node_modules/markdown-table-template/dist/mdtable.js"></script> 
         <script src="scripts/app.js"></script>
 
-        <!--<script src="scripts/bundle.js"></script>-->
         <script src="node_modules/markdown-it-embed-mathjax-highlight/dist/markdown-it-embed-mathjax-highlight.js"></script>
+    <script src ="node_modules/highlightjs/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
         <script>markdownItEmbedMathjaxHighlight.options.html = true; </script>
 	<script src="scripts/htmleditor.js"></script>
         <script src="scripts/store.js"></script>
 
         <!-- Highlight.js Note: Can not make it work through npm -->
         
-        <link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">
-        <script src="node_modules/highlightjs/highlight.pack.js"></script>
+
         
         <script>
         

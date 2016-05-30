@@ -4,6 +4,7 @@
 
 ![Screenshot](https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-markdown.png) 
 
+
 [<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
 A markdown editor for the desktop using:
@@ -18,25 +19,7 @@ A markdown editor for the desktop using:
 * Dialog for image
 * Dialog for videos (mp4)
 * Dialog for tables
-* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles`: e.g.: 
-
-\~~~php
-<?php
-
-echo "hello world";
-
-?>
-\~~~
-
-Becomes: 
-
-~~~php
-<?php
-
-echo "hello world";
-
-?>
-~~~
+* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles` (~~~)
 
 * Live preview of Math [MathJax](https://www.mathjax.org/), e.g.:
 
@@ -72,5 +55,4 @@ Clone and install
 Run electron-markdown-editor: 
 
     ./bin/electron-markdown-editor README.md
-
 
