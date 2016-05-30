@@ -2,7 +2,7 @@
 
 ## Screenshot
 
-![Screenshot](https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-markdown.png)
+![Screenshot](https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-markdown.png) 
 
 [<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
@@ -18,11 +18,30 @@ A markdown editor for the desktop using:
 * Dialog for image
 * Dialog for videos (mp4)
 * Dialog for tables
-* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles` ~~~ code ~~~
+* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles`: e.g.: 
+
+\~~~php
+<?php
+
+echo "hello world";
+
+?>
+\~~~
+
+Becomes: 
+
+~~~php
+<?php
+
+echo "hello world";
+
+?>
+~~~
 
 * Live preview of Math [MathJax](https://www.mathjax.org/), e.g.:
 
 $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
+
 
 * The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
 
