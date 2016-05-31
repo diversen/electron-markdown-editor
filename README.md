@@ -22,17 +22,16 @@ A markdown editor for the desktop using:
 * Live preview of code [highlight.js](https://highlightjs.org/) with `tiles`, e.g.: 
 
     \~~~php
-    <?php
+    &lt;?php
 
     echo "hello world";
 
     ?>
     \~~~
 
-~~~php
-
 Becomes: 
 
+~~~php
 <?php
 
 echo "hello world";
