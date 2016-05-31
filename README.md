@@ -19,7 +19,26 @@ A markdown editor for the desktop using:
 * Dialog for image
 * Dialog for videos (mp4)
 * Dialog for tables
-* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles` (~~~)
+* Live preview of code [highlight.js](https://highlightjs.org/) with `tiles`, e.g.: 
+
+    \~~~php
+    <?php
+
+    echo "hello world";
+
+    ?>
+    \~~~
+
+~~~php
+
+Becomes: 
+
+<?php
+
+echo "hello world";
+
+?>
+~~~
 
 * Live preview of Math [MathJax](https://www.mathjax.org/), e.g.:
 
@@ -41,12 +60,6 @@ You can specify one file on the commandline. E.g.:
     electron-markdown-editor README.md
 
 ## Development: 
-	   
-If you don't have electron-prebuilt: 
-
-    sudo npm install electron-prebuilt -g
-
-Clone and install
 
     git clone https://github.com/diversen/electron-markdown-editor
     cd electron-markdown-editor 
@@ -55,4 +68,3 @@ Clone and install
 Run electron-markdown-editor: 
 
     ./bin/electron-markdown-editor README.md
-

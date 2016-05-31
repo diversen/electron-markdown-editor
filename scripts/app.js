@@ -8,6 +8,7 @@ var delay = (function () {
 
 
 $(document).ready(function () {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     $('.markdown').keyup(function () {
         delay(function () {
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);

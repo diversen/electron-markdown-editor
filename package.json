@@ -1,7 +1,7 @@
 {
   "name": "electron-markdown-editor",
   "productName": "ElectronMarkdownEditor",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "electronVersion": "0.37.8",
   "description": "A markdown editor built with electron, uikit, and markdown-it",
   "keywords": [
