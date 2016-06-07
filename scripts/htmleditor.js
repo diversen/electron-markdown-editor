@@ -575,7 +575,7 @@
 
         init: function(editor) {
 
-            var parser = editor.options.mdparser || markdownItEmbedMathjaxHighlight || null;
+            var parser = editor.options.mdparser || marked || null;
             
             if (!parser) return;
 
