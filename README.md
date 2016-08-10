@@ -4,7 +4,6 @@
 
 ![Screenshot](https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-markdown.png) 
 
-
 [<img src="https://cdn.rawgit.com/diversen/electron-markdown-editor/master/resources/electron-logo.svg" align="right" width="200">](http://electron.atom.io)
 
 A markdown editor for the desktop using:
@@ -54,6 +53,10 @@ Global:
 
     sudo npm install electron-markdown-editor -g
     
+You will need the electron-prebuilt
+
+    sudo npm install electron-prebuilt -g
+    
 You can specify one file on the commandline. E.g.: 
     
     electron-markdown-editor README.md
@@ -67,3 +70,9 @@ You can specify one file on the commandline. E.g.:
 Run electron-markdown-editor: 
 
     ./bin/electron-markdown-editor README.md
+
+## Notes
+
+I updated to nodejs v6.3.1 and electron v1.3.3 and npm v3.10.5.
+
+The build scripts will most likely not work. There is some issues.  
