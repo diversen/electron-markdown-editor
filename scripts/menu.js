@@ -1,8 +1,9 @@
-var remote = require('remote');
-var Menu = remote.require('menu');
-var MenuItem = remote.require('menu-item');
+var {remote} = require('electron')
+const {Menu, MenuItem} = remote
+var {shell} = require('electron')
 
-var template = [
+
+const template = [
    {
       
 
@@ -140,7 +141,7 @@ var template = [
     submenu: [
       {
         label: 'Learn More',
-        click: function() { require('shell').openExternal('http://electron.atom.io') }
+        click: function() { shell.openExternal('http://electron.atom.io') }
       },
     ]
   },
@@ -202,5 +203,5 @@ if (process.platform == 'darwin') {
   );
 }
 
-menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)

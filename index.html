@@ -33,7 +33,7 @@
 
             // Prevent default click 'a' event
             if (app.env === 'electron'){
-                var shell = require('shell');
+                var {shell} = require('electron')
                 $(document).on('click', "a", function(event) {
                     event.preventDefault();
                     var url = $(this).attr('href');
