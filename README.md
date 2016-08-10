@@ -75,4 +75,4 @@ Run electron-markdown-editor:
 
 I updated to nodejs v6.3.1 and electron v1.3.3 and npm v3.10.5.
 
-The build scripts will most likely not work. There is some issues.  
+The build scripts will most likely not work (v2.0.x). There is some issues.  
