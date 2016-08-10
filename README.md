@@ -15,6 +15,7 @@ A markdown editor for the desktop using:
 ## Features
 
 * WYSIWYG
+* Shortcuts (ctrl-S, Ctrl-O) `save` and `open`
 * Dialog for image
 * Dialog for videos (mp4)
 * Dialog for tables
