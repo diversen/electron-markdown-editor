@@ -54,11 +54,7 @@ Global:
 
     sudo npm install electron-markdown-editor -g
     
-You will need the electron-prebuilt
-
-    sudo npm install electron-prebuilt -g
-    
-You can specify one file on the commandline. E.g.: 
+You can specify a file on the commandline. E.g.: 
     
     electron-markdown-editor README.md
 
@@ -72,8 +68,3 @@ Run electron-markdown-editor:
 
     ./bin/electron-markdown-editor README.md
 
-## Notes
-
-I updated to nodejs v6.3.1 and electron v1.3.3 and npm v3.10.5.
-
-The build scripts will most likely not work (v2.0.x). There is some issues.  
