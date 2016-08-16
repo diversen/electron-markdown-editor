@@ -663,7 +663,7 @@
 
                     
                     for (var i=pos.line; i<(posend.line+1);i++) {
-                        cm.replaceRange('* '+cm.getLine(i), { line: i, ch: 0 }, { line: i, ch: cm.getLine(i).length });
+                        cm.replaceRange('- '+cm.getLine(i), { line: i, ch: 0 }, { line: i, ch: cm.getLine(i).length });
                     }
 
                     cm.setCursor({ line: posend.line, ch: cm.getLine(posend.line).length });
