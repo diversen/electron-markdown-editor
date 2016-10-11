@@ -148,7 +148,7 @@ const template = [
 ];
 
 if (process.platform == 'darwin') {
-  var name = require('app').getName();
+  //var name = require('app').getName();
   template.unshift({
     label: name,
     submenu: [
@@ -186,8 +186,8 @@ if (process.platform == 'darwin') {
       },
       {
         label: 'Quit',
-        accelerator: 'Command+Q',
-        click: function() { app.quit(); }
+        accelerator: 'Command+Q' //,
+        //click: function() { app.quit(); }
       },
     ]
   });
