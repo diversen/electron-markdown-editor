@@ -1,6 +1,5 @@
-
-var {remote, Menu, MenuItem} = require('electron')
-// const {} = remote
+var {remote} = require('electron')
+const {Menu, MenuItem} = remote
 var {shell} = require('electron')
 
 
@@ -149,7 +148,9 @@ const template = [
 ];
 
 if (process.platform == 'darwin') {
-  //var name = require('app').getName();
+  // var name = require('app').getName();
+  const name = require('electron').remote.app.getName();
+  console.log(name);
   template.unshift({
     label: name,
     submenu: [
@@ -187,10 +188,10 @@ if (process.platform == 'darwin') {
       },
       {
         label: 'Quit',
-        accelerator: 'Command+Q',
+        accelerator: 'Command+Q', //,
         role: 'quit'
         //click: function() { app.quit(); }
-      }
+      },
     ]
   });
   // Window menu.
