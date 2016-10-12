@@ -1,5 +1,6 @@
-var {remote} = require('electron')
-const {Menu, MenuItem} = remote
+
+var {remote, Menu, MenuItem} = require('electron')
+// const {} = remote
 var {shell} = require('electron')
 
 
@@ -186,9 +187,10 @@ if (process.platform == 'darwin') {
       },
       {
         label: 'Quit',
-        accelerator: 'Command+Q' //,
+        accelerator: 'Command+Q',
+        role: 'quit'
         //click: function() { app.quit(); }
-      },
+      }
     ]
   });
   // Window menu.
