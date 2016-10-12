@@ -150,7 +150,7 @@ const template = [
 if (process.platform == 'darwin') {
   // var name = require('app').getName();
   const name = require('electron').remote.app.getName();
-  console.log(name);
+  //console.log(name);
   template.unshift({
     label: name,
     submenu: [
