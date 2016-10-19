@@ -26,7 +26,7 @@ const template = [
         
         },
         accelerator: 'CmdOrCtrl+S',
-        role: 'Save'
+        role: 'save'
       },
       
       {
@@ -35,7 +35,7 @@ const template = [
           if (focusedWindow)
             saveFileAs();
         },
-        //accelerator: 'CmdOrCtrl+S',
+        accelerator: 'CmdOrCtrl+S',
         role: 'save-as'
       }, 
       
