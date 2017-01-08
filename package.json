@@ -36,10 +36,11 @@
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.18.0",
+    "electron": "^1.4.13",
     "electron-debug": "^1.0.1",
-    "electron": "^1.4.3",
     "electron-window": "0.8.1",
     "highlightjs": "^8.7.0",
+    "is-electron": "^2.0.0",
     "isbinaryfile": "^3.0.0",
     "jquery": "^2.1.4",
     "markdown-it-embed-mathjax-highlight": "^1.0.1",
@@ -49,5 +50,8 @@
     "plist": "^1.2.0",
     "relative": "^3.0.2",
     "uikit": "^2.26.3"
+  },
+  "devDependencies": {
+    "electron": "^1.4.4"
   }
 }

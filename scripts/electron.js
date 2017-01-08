@@ -74,11 +74,6 @@ function readMarkdownFile (fileName) {
         });
 } 
 
-/*
-$(document).ready(function () {
-    dialog.showErrorBox("Fejl", "An error");
-})*/
-// dialog.showErrorBox(title, content)
 
 
 function openFile() {

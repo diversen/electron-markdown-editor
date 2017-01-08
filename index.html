@@ -3,57 +3,30 @@
     <head>
         <title>Markdown Editor</title>
         <meta charset="UTF-8">
-        
+
         <!-- Simple env script
           -- Sets env var: Is this a browser or electron? -->
         <script src="scripts/env.js"></script>
         <script>
             // Only electron menu - if env is electron
-            if (app.env === 'electron'){
+            if (app.env === 'electron') {
                 document.write('<script src="scripts/menu.js"><\/script>');
             }
 
         </script>
         <script>
 
-          
-            // Load jQuery from modules or remote if browser   
-            if (app.env === 'electron'){
+            if (app.env === 'electron') {
                 window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.js');
             } else {
                 document.write('<script src="https://code.jquery.com/jquery-2.1.4.min.js"><\/script>');
             }
+        </script>
+        <script>
 
-            var isDefined = function (attr) {
-                if (typeof attr !== typeof undefined && attr !== false) {
-                    return true;
-                }
-                return false;
-            };
-
-            // Prevent default click 'a' event
-            if (app.env === 'electron'){
-                var {shell} = require('electron')
-                $(document).on('click', "a", function(event) {
-                    event.preventDefault();
-                    var url = $(this).attr('href');
-                    if (isDefined(url)) {
-                        shell.openExternal(url);
-                    }
-                });
-            }
-            
-            // Read file if given from commandline
-            $(document).ready(function () {
-                if (app.env === 'electron'){     
-                    var isBinaryFile = require("isbinaryfile");
-                    if (__args__.file !== null) {
-                        if (!isBinaryFile.sync(__args__.file)) {
-                            readMarkdownFile(__args__.file);
-                        }
-                    }
-                }
-            });
+            if (app.env === 'electron') {
+                document.write('<script src="scripts/electron-file.js"><\/script>');
+            } 
 
         </script>
         <!-- We use uikit and the uikit components: notify, htmleditor
@@ -66,27 +39,26 @@
         <script src="node_modules/uikit/dist/js/uikit.js"></script>
         <script src="node_modules/uikit/dist/js/components/notify.js"></script>
 
-        <!-- Codemirror and marked dependencies -->
         <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
         <script src="node_modules/codemirror/lib/codemirror.js"></script>
         <script src="node_modules/codemirror/mode/markdown/markdown.js"></script>
         <script src="node_modules/codemirror/addon/mode/overlay.js"></script>
         <script src="node_modules/codemirror/mode/xml/xml.js"></script>
         <script src="node_modules/codemirror/mode/gfm/gfm.js"></script>
-        
-        <!-- Mathjax config -->
+
         <script src="node_modules/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
-                tex2jax: {
-                    preview: "none",
-                    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                    processEscapes: true
-                },
-                messageStyle: "none"
+            tex2jax: {
+            preview: "none",
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            processEscapes: true
+            },
+            messageStyle: "none"
 
             });
         </script>
+
         <link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">
 
         <!-- Modified version of UIKIT htmleditor -->
@@ -95,21 +67,18 @@
         <script src="scripts/app.js"></script>
 
         <script src="node_modules/markdown-it-embed-mathjax-highlight/dist/markdown-it-embed-mathjax-highlight.js"></script>
-    <script src ="node_modules/highlightjs/highlight.pack.js"></script>
-	<script>hljs.initHighlightingOnLoad();</script>
-        <script>markdownItEmbedMathjaxHighlight.options.html = true; </script>
-	<script>marked = markdownItEmbedMathjaxHighlight;</script>
-	<script src="scripts/htmleditor.js"></script>
+        <script src ="node_modules/highlightjs/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>markdownItEmbedMathjaxHighlight.options.html = true;</script>
+        <script>marked = markdownItEmbedMathjaxHighlight;</script>
+        <script src="scripts/htmleditor.js"></script>
         <script src="scripts/store.js"></script>
 
         <!-- Highlight.js Note: Can not make it work through npm -->
-        
-
-        
         <script>
-        
+
             // File browsing
-            if (app.env === 'electron'){
+            if (app.env === 'electron') {
                 document.write('<script type="text/javascript" src="scripts/electron.js"><\/script>');
             } else {
                 document.write('<script type="text/javascript" src="scripts/web.js"><\/script>');
@@ -123,13 +92,13 @@
                 <a class="uk-modal-close uk-close"></a>
             </div>
         </div>
-        
+
         <div id="video-modal" class="uk-modal">
             <div class="uk-modal-dialog video-modal">
                 <a class="uk-modal-close uk-close"></a>
             </div>
         </div>
-        
+
         <div id="table-modal" class="uk-modal">
             <div class="uk-modal-dialog">
                 <a class="uk-modal-close uk-close"></a>
@@ -143,13 +112,13 @@
                     </fieldset>
 
                 </form>
-                
+
             </div>
         </div>
-        
+
         <span class="markdown">
             <textarea data-uk-htmleditor="{mode:'split', maxsplitsize:600, markdown:true}"></textarea>
         </span>
-        
+
     </body>
 </html>

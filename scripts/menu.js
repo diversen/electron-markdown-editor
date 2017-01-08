@@ -52,7 +52,7 @@ const template = [
       },
       {
         label: 'Redo',
-        accelerator: 'Shift+CmdOrCtrl+Z',
+        accelerator: 'CmdOrCtrl+Y',
         role: 'redo'
       },
       {
@@ -85,7 +85,7 @@ const template = [
     submenu: [
       {
         label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
+        accelerator: 'Alt+R',
         click: function(item, focusedWindow) {
           if (focusedWindow)
             focusedWindow.reload();

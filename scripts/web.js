@@ -8,7 +8,6 @@ function getSchemeAndUrl () {
 function getImages() {
     var url = '/image/rpc?reference=' + markedit_helper.reference + '&parent_id=' + markedit_helper.parent_id;
     
-    
     return $.getJSON(url, function (data) {
         
         $('.image-modal').append('<i class="fa fa-picture-o"></i><hr />');
