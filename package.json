@@ -18,7 +18,7 @@
   },
   "scripts": {
     "clean:dist": "rm -rf ./dist",
-    "build:osx": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version && node scripts/post-build-mac.js",
+    "build:osx": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:win": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=win32 --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:linux": "electron-packager . $npm_package_productName --out=dist --arch=x64 --platform=linux --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version"
   },
