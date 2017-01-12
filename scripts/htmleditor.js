@@ -456,7 +456,7 @@
             addAction('link', '<a href="http://">$1</a>');
 
             var imageFn = function () {
-                if (app.env == 'electron'){
+                if (PROCESS_CONTEXT == 'electron'){
                     openImageFile();
                 } else {
                     $.UIkit.modal("#image-modal").show();
@@ -464,7 +464,7 @@
             };
             
             var videoFn = function () {
-                if (app.env == 'electron'){
+                if (PROCESS_CONTEXT == 'electron'){
                     openVideoFile();
                 } else {
                     $.UIkit.modal("#video-modal").show();
@@ -472,18 +472,15 @@
             };
             
             var fileFn = function () {
-                if (app.env == 'electron'){
+                if (PROCESS_CONTEXT == 'electron'){
                     openFileFile();
                 } else {
                     $.UIkit.modal("#file-modal").show();
                 }
             };
             
-            var tableFn = function () {
-                // console.log('tableFn');   
+            var tableFn = function () {  
                 $.UIkit.modal("#table-modal").show();
-                // $.UIkit.modal("#table-modal").show();
-
             };
             
             
@@ -557,7 +554,7 @@
                 }, 50);
             });
 
-            editor.addShortcut(['Ctrl-S', 'Cmd-S'], function() { editor.element.trigger('htmleditor-save', [editor]); });
+            // editor.addShortcut(['Ctrl-S', 'Cmd-S'], function() { editor.element.trigger('htmleditor-save', [editor]); });
             editor.addShortcutAction('bold', ['Ctrl-B', 'Cmd-B']);
 
             function addAction(name, replace, mode) {

@@ -1,7 +1,6 @@
-var {remote} = require('electron')
+const {remote} = require('electron')
 const {Menu, MenuItem} = remote
 var {shell} = require('electron')
-
 
 const template = [
    {

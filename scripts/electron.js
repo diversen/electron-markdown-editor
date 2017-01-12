@@ -1,18 +1,51 @@
-var {remote} = require('electron')
 const {dialog} = require('electron').remote
-var fs = require('fs');
+const fs = require('fs');
 
 
-$(document).ready(function () {  
-    $(document).bind('keydown', 'ctrl+s', function(e) {
-        if (e.ctrlKey && (e.which == 83)) {
-            e.preventDefault();
-            saveFile();
-            return false;
-        }
+// Matjax
+var delay = (function () {
+    var timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
+
+
+$(document).ready(function () {
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    $('.markdown').keyup(function () {
+        delay(function () {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }, 2000);
     });
 });
 
+const isDefined = function (attr) {
+    if (typeof attr !== typeof undefined && attr !== false) {
+        return true;
+    }
+    return false;
+};
+
+var {shell} = require('electron')
+$(document).on('click', "a", function (event) {
+    event.preventDefault();
+    var url = $(this).attr('href');
+    if (isDefined(url)) {
+        shell.openExternal(url);
+    }
+});
+
+// Read file if given from commandline
+$(document).ready(function () {
+    var isBinaryFile = require("isbinaryfile");
+    if (__args__.file !== null) {
+        if (!isBinaryFile.sync(__args__.file)) {
+            readMarkdownFile(__args__.file);
+        }
+    }
+});
 
 /**
  * 
@@ -75,7 +108,10 @@ function readMarkdownFile (fileName) {
 } 
 
 
-
+/**
+ * Open a file
+ * @returns {undefined}
+ */
 function openFile() {
     dialog.showOpenDialog({filters: [
             {name: 'markdown', extensions: ['txt', 'md', 'markdown']}
@@ -103,7 +139,6 @@ function saveMarkdownFile(fileName, data) {
             return false;
         }
         
-        console.log(fileName);
         store.currentFile = fileName;
         UIkit.notify({
             message : 'Saved file ' + fileName,
@@ -115,14 +150,19 @@ function saveMarkdownFile(fileName, data) {
     });
 }
 
+/**
+ * Save a file
+ * @returns {Boolean}
+ */
 function saveFile() {
-
+    
+    console.log('Trying to save');
     if (typeof store.currentFile === "undefined" || store.currentFile == null) {
         saveFileAs();
 
     } else {
         // console.log('saveFile');
-        fileName = store.currentFile;
+        var fileName = store.currentFile;
         var editor = $('.CodeMirror')[0].CodeMirror;
         var value = editor.getValue();
         saveMarkdownFile(fileName, value);
@@ -213,3 +253,43 @@ function openFileFile() {
             insertLine(doc, store.pos, text);
     });
 }
+
+// Table dialog
+// Table dialog for both electron and browser
+$(document).ready(function () {
+    
+    $(".table-form").submit(function (e) {
+        e.preventDefault();
+        var rows = $(".table-rows").val();
+        var cols = $(".table-cols").val();
+        
+        // Insure it is ints
+        rows = parseInt(rows);
+        cols = parseInt(cols);
+        
+        var text = mdtable.create(rows, cols);
+
+        text = text.replace(/^\s+|\s+$/g, '');
+        
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+        
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        insertLine(doc, store.pos, text);
+
+        var modal = UIkit.modal("#table-modal");
+        modal.hide();
+
+        return false;
+    });
+});
+
+// Insert a line
+var insertLine = function (doc, pos, text) {
+    var cursor = doc.getCursor(); // gets the line number in the cursor position
+    doc.replaceRange(text, pos);
+};

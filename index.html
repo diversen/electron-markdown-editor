@@ -3,32 +3,22 @@
     <head>
         <title>Markdown Editor</title>
         <meta charset="UTF-8">
-
-        <!-- Simple env script
-          -- Sets env var: Is this a browser or electron? -->
-        <script src="scripts/env.js"></script>
+        
+        <script src="node_modules/detect-process/dist/detectProcess.js"></script>
         <script>
+        
+        const PROCESS_CONTEXT = detectProcess.getName();
+        
             // Only electron menu - if env is electron
-            if (app.env === 'electron') {
+            if (PROCESS_CONTEXT === 'electron') {
                 document.write('<script src="scripts/menu.js"><\/script>');
-            }
-
-        </script>
-        <script>
-
-            if (app.env === 'electron') {
                 window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.js');
             } else {
                 document.write('<script src="https://code.jquery.com/jquery-2.1.4.min.js"><\/script>');
             }
+        
         </script>
-        <script>
 
-            if (app.env === 'electron') {
-                document.write('<script src="scripts/electron-file.js"><\/script>');
-            } 
-
-        </script>
         <!-- We use uikit and the uikit components: notify, htmleditor
           -- The htmleditor is a modification and is loaded later ... -->
 
@@ -40,6 +30,7 @@
         <script src="node_modules/uikit/dist/js/components/notify.js"></script>
 
         <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+        
         <script src="node_modules/codemirror/lib/codemirror.js"></script>
         <script src="node_modules/codemirror/mode/markdown/markdown.js"></script>
         <script src="node_modules/codemirror/addon/mode/overlay.js"></script>
@@ -61,11 +52,7 @@
 
         <link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">
 
-        <!-- Modified version of UIKIT htmleditor -->
-        <!--<script src="scripts/files-web.js"></script>-->
         <script src ="node_modules/markdown-table-template/dist/mdtable.js"></script> 
-        <script src="scripts/app.js"></script>
-
         <script src="node_modules/markdown-it-embed-mathjax-highlight/dist/markdown-it-embed-mathjax-highlight.js"></script>
         <script src ="node_modules/highlightjs/highlight.pack.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
@@ -78,7 +65,7 @@
         <script>
 
             // File browsing
-            if (app.env === 'electron') {
+            if (PROCESS_CONTEXT === 'electron') {
                 document.write('<script type="text/javascript" src="scripts/electron.js"><\/script>');
             } else {
                 document.write('<script type="text/javascript" src="scripts/web.js"><\/script>');
@@ -87,6 +74,13 @@
         </script>
     </head>
     <body>
+        
+        <div id="file-modal" class="uk-modal">
+            <div class="uk-modal-dialog file-modal">
+                <a class="uk-modal-close uk-close"></a>
+            </div>
+        </div>
+        
         <div id="image-modal" class="uk-modal">
             <div class="uk-modal-dialog image-modal">
                 <a class="uk-modal-close uk-close"></a>
@@ -119,6 +113,5 @@
         <span class="markdown">
             <textarea data-uk-htmleditor="{mode:'split', maxsplitsize:600, markdown:true}"></textarea>
         </span>
-
     </body>
 </html>
