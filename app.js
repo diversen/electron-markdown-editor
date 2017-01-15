@@ -1,13 +1,15 @@
-const { app } = require('electron')
-const path = require('path')
-const window = require('electron-window')
+const app = require('electron').app;
+const path = require('path');
+const window = require('electron-window');
+const shell = require('electron').shell;
+const electron = require('electron');
+const BrowserWindow = electron.BrowserWindow;
 
-var args = [];
-var readFile = null;
 
 let mainWindow;
-// Debug - should be a flag
-// require('electron-debug')({showDevTools: true}); 
+var readFile = null;
+
+// require('electron-debug')({showDevTools: true});
 
 process.argv.forEach(function (val, index, array) {
 
@@ -27,8 +29,8 @@ function createWindow() {
             javascript : false
         };
     
-    mainWindow = window.createWindow(options);   
-    const args = {
+    mainWindow = window.createWindow(options); 
+    let args = {
         file: readFile
     };
     
@@ -36,12 +38,37 @@ function createWindow() {
     mainWindow.showUrl(__dirname + '/index.html', args);
     
     mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
-  })
+        // Dereference the window object, usually you would store windows
+        // in an array if your app supports multi windows, this is the time
+        // when you should delete the corresponding element.
+        mainWindow = null
+    });
+    
+    //mainWindow.maximize
+    mainWindow.on('maximize', function () {
+        //console.log('maximize');
+        //mainWindow = null
+        alert('test');
+    });
+    
+    
 }
 
 
-app.on('ready', createWindow );
+
+app.on('ready', function () {
+    createWindow(); 
+});
+
+app.on('activate', function () {
+    mainWindow.restore();
+});
+
+app.on('before-quit', function () {
+    // Not used. Just to remember the options
+}) ;
+
+app.on('open-file', function () {
+    // Not used. Just to remember the options
+}) ;
+

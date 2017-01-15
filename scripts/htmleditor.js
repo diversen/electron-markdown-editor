@@ -456,7 +456,7 @@
             addAction('link', '<a href="http://">$1</a>');
 
             var imageFn = function () {
-                if (PROCESS_CONTEXT == 'electron'){
+                if (PROCESS_CONTEXT === 'electron'){
                     openImageFile();
                 } else {
                     $.UIkit.modal("#image-modal").show();
@@ -502,6 +502,33 @@
                 }
             };
             
+            var toggleFullScreen = function () {
+                editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
+
+                var wrap = editor.editor.getWrapperElement();
+
+                if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
+
+                    editor.editor.state.fullScreenRestore = {
+                        scrollTop: window.pageYOffset, 
+                        scrollLeft: window.pageXOffset, 
+                        width: wrap.style.width, 
+                        height: wrap.style.height
+                    };
+                    
+                    wrap.style.width  = '';
+                    wrap.style.height = editor.content.height()+'px';
+                    document.documentElement.style.overflow = 'hidden';
+
+                } else {
+
+                    document.documentElement.style.overflow = '';
+                    var info = editor.editor.state.fullScreenRestore;
+                    wrap.style.width = info.width; wrap.style.height = info.height;
+                    window.scrollTo(info.scrollLeft, info.scrollTop);
+                }
+            };
+            
             editor.on('action.image', function() {
                 imageFn();
             });
@@ -526,34 +553,30 @@
                 listfn();
             });
             
-            
+            if (PROCESS_CONTEXT === 'electron'){
+                 editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
+                    toggleFullScreen();
 
-            editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
-                editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
+                    setTimeout(function() {
+                        editor.fit();
+                        UI.$win.trigger('resize');
+                    }, 50);
+                });
+                
+                $('a[data-htmleditor-button="fullscreen"]').trigger('click');
+                 
+                // editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
+            } else {
+                editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
+                    toggleFullScreen();
 
-                var wrap = editor.editor.getWrapperElement();
+                    setTimeout(function() {
+                        editor.fit();
+                        UI.$win.trigger('resize');
+                    }, 50);
+                });
 
-                if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
-
-                    editor.editor.state.fullScreenRestore = {scrollTop: window.pageYOffset, scrollLeft: window.pageXOffset, width: wrap.style.width, height: wrap.style.height};
-                    wrap.style.width  = '';
-                    wrap.style.height = editor.content.height()+'px';
-                    document.documentElement.style.overflow = 'hidden';
-
-                } else {
-
-                    document.documentElement.style.overflow = '';
-                    var info = editor.editor.state.fullScreenRestore;
-                    wrap.style.width = info.width; wrap.style.height = info.height;
-                    window.scrollTo(info.scrollLeft, info.scrollTop);
-                }
-
-                setTimeout(function() {
-                    editor.fit();
-                    UI.$win.trigger('resize');
-                }, 50);
-            });
-
+            }
             // editor.addShortcut(['Ctrl-S', 'Cmd-S'], function() { editor.element.trigger('htmleditor-save', [editor]); });
             editor.addShortcutAction('bold', ['Ctrl-B', 'Cmd-B']);
 

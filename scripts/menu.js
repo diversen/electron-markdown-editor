@@ -1,6 +1,18 @@
-const {remote} = require('electron')
-const {Menu, MenuItem} = remote
-var {shell} = require('electron')
+const remote = require('electron').remote;
+const Menu = remote.Menu;
+const MenuItem = remote.MenuItem;
+
+
+function sendAction(action) {
+	const win = BrowserWindow.getAllWindows()[0];
+
+	if (process.platform === 'darwin') {
+		win.restore();
+	}
+
+	win.webContents.send(action);
+}
+
 
 const template = [
    {
@@ -11,8 +23,9 @@ const template = [
       {
         label: 'Open',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          //if (focusedWindow) {
             openFile();
+	  //}
         },
         accelerator: 'CmdOrCtrl+O',
         role: 'open'
@@ -20,8 +33,9 @@ const template = [
       {
         label: 'Save',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          //if (focusedWindow) {
             saveFile();
+	  //}
         
         },
         accelerator: 'CmdOrCtrl+S',
@@ -31,7 +45,7 @@ const template = [
       {
         label: 'Save as',
         click: function(item, focusedWindow) {
-          if (focusedWindow)
+          //if (focusedWindow)
             saveFileAs();
         },
         accelerator: 'CmdOrCtrl+S',

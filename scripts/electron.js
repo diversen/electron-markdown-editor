@@ -21,6 +21,15 @@ $(document).ready(function () {
     });
 });
 
+// Easy solution to expand html-editor.
+/*
+$(document).ready(function () {
+    UI.htmleditor.editor
+    $( 'a[data-htmleditor-button="fullscreen"]' ).trigger( "click" );
+});*/
+
+
+// isDefined function
 const isDefined = function (attr) {
     if (typeof attr !== typeof undefined && attr !== false) {
         return true;
@@ -28,7 +37,7 @@ const isDefined = function (attr) {
     return false;
 };
 
-var {shell} = require('electron')
+// var {shell} = require('electron')
 $(document).on('click', "a", function (event) {
     event.preventDefault();
     var url = $(this).attr('href');
