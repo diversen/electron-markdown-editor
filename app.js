@@ -6,6 +6,7 @@ const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 
 
+
 let mainWindow;
 var readFile = null;
 

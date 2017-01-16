@@ -37,7 +37,7 @@ const isDefined = function (attr) {
     return false;
 };
 
-// var {shell} = require('electron')
+var {shell} = require('electron');
 $(document).on('click', "a", function (event) {
     event.preventDefault();
     var url = $(this).attr('href');
@@ -89,7 +89,6 @@ function getFilesAsMd(files) {
 function readMarkdownFile (fileName) {
     
         store.currentFile = fileName;
-        console.log("Stored currect" + store.currentFile);
         fs.readFile(fileName, 'utf-8', function (err, data) {
             if (err) {
                 store.currentFile = null;
