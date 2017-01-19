@@ -43,6 +43,8 @@ echo "hello world";
 
 $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
 
+(You will not be able to see parsing of MathJax on github.com or npmjs.com - but only when using the editor).
+
 
 * The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
 
