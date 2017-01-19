@@ -45,11 +45,9 @@ function createWindow() {
         mainWindow = null
     });
     
-    //mainWindow.maximize
+    //mainWindow.maximize - just to test
     mainWindow.on('maximize', function () {
-        //console.log('maximize');
-        //mainWindow = null
-        alert('test');
+        console.log('maximize');
     });
     
     

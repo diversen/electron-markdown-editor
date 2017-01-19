@@ -1,6 +1,10 @@
 const {dialog} = require('electron').remote
 const fs = require('fs');
 
+// This is deinfed in the app - but the app process
+// is different when the window is opened and the 
+// app is loaded - so this is possible
+const {shell} = require('electron');
 
 // Matjax
 var delay = (function () {
@@ -37,7 +41,7 @@ const isDefined = function (attr) {
     return false;
 };
 
-var {shell} = require('electron');
+
 $(document).on('click', "a", function (event) {
     event.preventDefault();
     var url = $(this).attr('href');
