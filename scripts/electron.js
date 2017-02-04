@@ -1,9 +1,11 @@
 const {dialog} = require('electron').remote
 const fs = require('fs');
+const isDefined = require('is-defined-eval');
 
 // This is deinfed in the app - but the app process
 // is different when the window is opened and the 
 // app is loaded - so this is possible
+
 const {shell} = require('electron');
 
 // Matjax
@@ -25,27 +27,10 @@ $(document).ready(function () {
     });
 });
 
-// Easy solution to expand html-editor.
-/*
-$(document).ready(function () {
-    UI.htmleditor.editor
-    $( 'a[data-htmleditor-button="fullscreen"]' ).trigger( "click" );
-});*/
-
-
-// isDefined function
-const isDefined = function (attr) {
-    if (typeof attr !== typeof undefined && attr !== false) {
-        return true;
-    }
-    return false;
-};
-
-
 $(document).on('click', "a", function (event) {
     event.preventDefault();
     var url = $(this).attr('href');
-    if (isDefined(url)) {
+    if (url) {
         shell.openExternal(url);
     }
 });
@@ -59,13 +44,6 @@ $(document).ready(function () {
         }
     }
 });
-
-/**
- * 
- * @param {type} dir
- * @param {type} files_
- * @returns {@var;files_|Array}
- */
 
 function getFiles(dir, files_) {
     files_ = files_ || [];
@@ -86,38 +64,37 @@ function getFilesAsMd(files) {
     $.each(files, function (index, value) {
         str = str + '<a class="uikit-cm-image uk-thumbnail" href="' + value + '"><img src="' + value + '" alt=""></a>';
     });
-    console.log(str);
     return str;
 }
 
-function readMarkdownFile (fileName) {
-    
-        store.currentFile = fileName;
-        fs.readFile(fileName, 'utf-8', function (err, data) {
-            if (err) {
-                store.currentFile = null;
-                UIkit.notify({
-                    message : err,
-                    status  : 'error',
-                    timeout : 2000,
-                    pos     : 'bottom-left'
-                });
-                store.currentFile = null;
-                return false;
-            }
-            var editor = $('.CodeMirror')[0].CodeMirror;
-            editor.setValue(data);
-            editor.refresh();
+function readMarkdownFile(fileName) {
+
+    store.currentFile = fileName;
+    fs.readFile(fileName, 'utf-8', function (err, data) {
+        if (err) {
+            store.currentFile = null;
             UIkit.notify({
-                message : 'File opened',
-                status  : 'info',
-                timeout : 2000,
-                pos     : 'bottom-left'
+                message: err,
+                status: 'error',
+                timeout: 2000,
+                pos: 'bottom-left'
             });
-            store.currentFile = fileName;
-            return true;
+            store.currentFile = null;
+            return false;
+        }
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.setValue(data);
+        editor.refresh();
+        UIkit.notify({
+            message: 'File opened',
+            status: 'info',
+            timeout: 2000,
+            pos: 'bottom-left'
         });
-} 
+        store.currentFile = fileName;
+        return true;
+    });
+}
 
 
 /**
@@ -131,7 +108,7 @@ function openFile() {
         if (fileNames === undefined) {
             return;
         }
-        
+
         var fileName = fileNames[0];
         readMarkdownFile(fileName);
 
@@ -143,20 +120,20 @@ function saveMarkdownFile(fileName, data) {
         if (err) {
             store.currentFile = null;
             UIkit.notify({
-                message : err,
-                status  : 'error',
-                timeout : 2000,
-                pos     : 'bottom-left'
+                message: err,
+                status: 'error',
+                timeout: 2000,
+                pos: 'bottom-left'
             });
             return false;
         }
-        
+
         store.currentFile = fileName;
         UIkit.notify({
-            message : 'Saved file ' + fileName,
-            status  : 'info',
-            timeout : 2000,
-            pos     : 'bottom-left'
+            message: 'Saved file ' + fileName,
+            status: 'info',
+            timeout: 2000,
+            pos: 'bottom-left'
         });
         return true;
     });
@@ -167,7 +144,7 @@ function saveMarkdownFile(fileName, data) {
  * @returns {Boolean}
  */
 function saveFile() {
-    
+
     console.log('Trying to save');
     if (typeof store.currentFile === "undefined" || store.currentFile == null) {
         saveFileAs();
@@ -189,7 +166,7 @@ function saveFileAs() {
         if (fileName === undefined) {
             return;
         }
-        
+
         var editor = $('.CodeMirror')[0].CodeMirror;
         var value = editor.getValue();
         saveMarkdownFile(fileName, value);
@@ -198,96 +175,94 @@ function saveFileAs() {
 }
 
 function openImageFile() {
-    dialog.showOpenDialog({filters: [{name: 'Insert image', extensions: ['jpg', 'gif','svg','png','mp4']}]}, 
-        function (fileNames) {
-            if (fileNames === undefined) {
-                return;
-            }
+    dialog.showOpenDialog({filters: [{name: 'Insert image', extensions: ['jpg', 'gif', 'svg', 'png', 'mp4']}]}, function (fileNames) {
+        if (fileNames === undefined) {
+            return;
+        }
 
-            var fileName = fileNames[0];
-            title = 'title';
+        var fileName = fileNames[0];
+        title = 'title';
 
-            var editor = $('.CodeMirror')[0].CodeMirror;
-            editor.refresh();
-
-            var doc = editor.getDoc();
-            doc.setCursor(store.pos);            
-            editor.focus();
-
-            var text = '![' + title + '](' + fileName + ")";
-
-            insertLine(doc, store.pos, text);
-    });
-}
-
-function openVideoFile() {
-    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['mp4']}]}, 
-        function (fileNames) {
-            if (fileNames === undefined) {
-                return;
-            }
-
-            var fileName = fileNames[0];
-            title = 'title';
-
-            var editor = $('.CodeMirror')[0].CodeMirror;
-            editor.refresh();
-
-            var doc = editor.getDoc();
-            doc.setCursor(store.pos);
-            editor.focus();
-
-            var text = '![' + title + '](' + fileName + ")";
-
-            insertLine(doc, store.pos, text);
-    });
-}
-
-function openFileFile() {
-    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['*']}]}, 
-        function (fileNames) {
-            if (fileNames === undefined) {
-                return;
-            }
-
-            var fileName = fileNames[0];
-            title = 'title';
-
-            var editor = $('.CodeMirror')[0].CodeMirror;
-            editor.refresh();
-
-            var doc = editor.getDoc();
-            doc.setCursor(store.pos);
-            editor.focus();
-
-            var text = '[' + title + '](' + fileName + ")";
-
-            insertLine(doc, store.pos, text);
-    });
-}
-
-// Table dialog
-// Table dialog for both electron and browser
-$(document).ready(function () {
-    
-    $(".table-form").submit(function (e) {
-        e.preventDefault();
-        var rows = $(".table-rows").val();
-        var cols = $(".table-cols").val();
-        
-        // Insure it is ints
-        rows = parseInt(rows);
-        cols = parseInt(cols);
-        
-        var text = mdtable.create(rows, cols);
-
-        text = text.replace(/^\s+|\s+$/g, '');
-        
         var editor = $('.CodeMirror')[0].CodeMirror;
         editor.refresh();
 
         var doc = editor.getDoc();
-        
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        var text = '![' + title + '](' + fileName + ")";
+
+        insertLine(doc, store.pos, text);
+    });
+}
+
+function openVideoFile() {
+    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['mp4']}]}, function (fileNames) {
+        if (fileNames === undefined) {
+            return;
+        }
+
+        var fileName = fileNames[0];
+        title = 'title';
+
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        var text = '![' + title + '](' + fileName + ")";
+
+        insertLine(doc, store.pos, text);
+    });
+};
+
+function openFileFile() {
+    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['*']}]}, function (fileNames) {
+        if (fileNames === undefined) {
+            return;
+        }
+
+        var fileName = fileNames[0];
+        title = 'title';
+
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+        doc.setCursor(store.pos);
+        editor.focus();
+
+        var text = '[' + title + '](' + fileName + ")";
+
+        insertLine(doc, store.pos, text);
+    });
+}
+;
+
+// Table dialog
+// Table dialog for both electron and browser
+$(document).ready(function () {
+
+    $(".table-form").submit(function (e) {
+        e.preventDefault();
+        var rows = $(".table-rows").val();
+        var cols = $(".table-cols").val();
+
+        // Insure it is ints
+        rows = parseInt(rows);
+        cols = parseInt(cols);
+
+        var text = mdtable.create(rows, cols);
+
+        text = text.replace(/^\s+|\s+$/g, '');
+
+        var editor = $('.CodeMirror')[0].CodeMirror;
+        editor.refresh();
+
+        var doc = editor.getDoc();
+
         doc.setCursor(store.pos);
         editor.focus();
 

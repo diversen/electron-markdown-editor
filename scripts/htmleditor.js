@@ -27,8 +27,8 @@
             mode         : 'split',
             markdown     : false,
             autocomplete : true,
-            height       : 500,
-            maxsplitsize : 1000,
+            height       : 1000,
+            maxsplitsize : 600,
             codemirror   : { mode: 'htmlmixed', lineWrapping: true, dragDrop: false, autoCloseTags: true, matchTags: true, autoCloseBrackets: true, matchBrackets: true, indentUnit: 4, indentWithTabs: false, tabSize: 4, hintOptions: {completionSingle:false} },
             toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'video', 'file', 'blockquote', 'listUl', 'listOl', 'table' ],
             lblPreview   : 'Preview',
@@ -249,7 +249,7 @@
         fit: function() {
 
             var mode = this.options.mode;
-
+            
             if (mode == 'split' && this.htmleditor.width() < this.options.maxsplitsize) {
                 mode = 'tab';
             }
@@ -267,7 +267,8 @@
 
             this.editor.refresh();
             this.preview.parent().css('height', this.code.height());
-
+            
+            // mode = 'tab'
             this.htmleditor.attr('data-mode', mode);
         },
 
@@ -503,9 +504,11 @@
             };
             
             var toggleFullScreen = function () {
+
                 editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
 
                 var wrap = editor.editor.getWrapperElement();
+                
 
                 if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
 
@@ -554,29 +557,30 @@
             });
             
             if (PROCESS_CONTEXT === 'electron'){
-                 editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
-                    toggleFullScreen();
-
-                    setTimeout(function() {
-                        editor.fit();
-                        UI.$win.trigger('resize');
-                    }, 50);
-                });
                 
-                $('a[data-htmleditor-button="fullscreen"]').trigger('click');
-                 
-                // editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
-            } else {
-                editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
-                    toggleFullScreen();
-
-                    setTimeout(function() {
-                        editor.fit();
-                        UI.$win.trigger('resize');
-                    }, 50);
-                });
-
+                toggleFullScreen();
+                
+                var wrap = editor.editor.getWrapperElement();
+                window.onresize = function(event) {
+                    document.documentElement.style.overflow = '';
+                    var info = editor.editor.state.fullScreenRestore;
+                    wrap.style.width = info.width; wrap.style.height = info.height;
+                    window.scrollTo(info.scrollLeft, info.scrollTop);
+                    // console.log('resize');
+                };
+                
             }
+            
+            editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function () {
+                toggleFullScreen();
+
+                setTimeout(function () {
+                    editor.fit();
+                    UI.$win.trigger('resize');
+                }, 50);
+            });
+
+
             // editor.addShortcut(['Ctrl-S', 'Cmd-S'], function() { editor.element.trigger('htmleditor-save', [editor]); });
             editor.addShortcutAction('bold', ['Ctrl-B', 'Cmd-B']);
 

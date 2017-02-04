@@ -5,9 +5,6 @@ const shell = require('electron').shell;
 const electron = require('electron');
 const BrowserWindow = electron.BrowserWindow;
 
-
-
-let mainWindow;
 var readFile = null;
 
 // require('electron-debug')({showDevTools: true});
@@ -30,7 +27,9 @@ function createWindow() {
             javascript : false
         };
     
+    let mainWindow;
     mainWindow = window.createWindow(options); 
+    
     let args = {
         file: readFile
     };
@@ -44,19 +43,22 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null
     });
-    
+        
     //mainWindow.maximize - just to test
     mainWindow.on('maximize', function () {
         console.log('maximize');
     });
-    
-    
+        
+    return mainWindow;
+
 }
 
-
-
 app.on('ready', function () {
-    createWindow(); 
+    mainWindow = createWindow();
+    /*
+    mainWindow.on('resize', function () {
+        //console.log('resize'); 
+    });*/
 });
 
 app.on('activate', function () {
@@ -70,4 +72,3 @@ app.on('before-quit', function () {
 app.on('open-file', function () {
     // Not used. Just to remember the options
 }) ;
-
