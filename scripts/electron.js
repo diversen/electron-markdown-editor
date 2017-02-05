@@ -97,7 +97,7 @@ function readMarkdownFile(fileName) {
         return true;
     });
 }
-s
+
 function openFile() {
     dialog.showOpenDialog({filters: [
             {name: 'markdown', extensions: ['txt', 'md', 'markdown']}
