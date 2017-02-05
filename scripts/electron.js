@@ -2,10 +2,8 @@ const {dialog} = require('electron').remote
 const fs = require('fs');
 const isDefined = require('is-defined-eval');
 
-// This is deinfed in the app - but the app process
-// is different when the window is opened and the 
-// app is loaded - so this is possible
-
+// Shell var a const in the main process. 
+// This is the rederer prodcess - so it is ok. 
 const {shell} = require('electron');
 
 // Matjax
@@ -16,7 +14,6 @@ var delay = (function () {
         timer = setTimeout(callback, ms);
     };
 })();
-
 
 $(document).ready(function () {
     MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
@@ -96,7 +93,6 @@ function readMarkdownFile(fileName) {
     });
 }
 
-
 /**
  * Open a file
  * @returns {undefined}
@@ -139,18 +135,12 @@ function saveMarkdownFile(fileName, data) {
     });
 }
 
-/**
- * Save a file
- * @returns {Boolean}
- */
 function saveFile() {
 
-    console.log('Trying to save');
     if (typeof store.currentFile === "undefined" || store.currentFile == null) {
         saveFileAs();
 
     } else {
-        // console.log('saveFile');
         var fileName = store.currentFile;
         var editor = $('.CodeMirror')[0].CodeMirror;
         var value = editor.getValue();
