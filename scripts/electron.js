@@ -6,6 +6,11 @@ const isDefined = require('is-defined-eval');
 // This is the rederer prodcess - so it is ok. 
 const {shell} = require('electron');
 
+var insertLine = function (doc, pos, text) {
+    var cursor = doc.getCursor(); // gets the line number in the cursor position
+    doc.replaceRange(text, pos);
+};
+
 // Matjax
 var delay = (function () {
     var timer = 0;
@@ -258,7 +263,4 @@ $(document).ready(function () {
     });
 });
 
-var insertLine = function (doc, pos, text) {
-    var cursor = doc.getCursor(); // gets the line number in the cursor position
-    doc.replaceRange(text, pos);
-};
+
