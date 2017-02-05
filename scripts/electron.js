@@ -92,11 +92,7 @@ function readMarkdownFile(fileName) {
         return true;
     });
 }
-
-/**
- * Open a file
- * @returns {undefined}
- */
+s
 function openFile() {
     dialog.showOpenDialog({filters: [
             {name: 'markdown', extensions: ['txt', 'md', 'markdown']}
@@ -228,11 +224,8 @@ function openFileFile() {
 
         insertLine(doc, store.pos, text);
     });
-}
-;
+};
 
-// Table dialog
-// Table dialog for both electron and browser
 $(document).ready(function () {
 
     $(".table-form").submit(function (e) {
@@ -265,7 +258,6 @@ $(document).ready(function () {
     });
 });
 
-// Insert a line
 var insertLine = function (doc, pos, text) {
     var cursor = doc.getCursor(); // gets the line number in the cursor position
     doc.replaceRange(text, pos);
