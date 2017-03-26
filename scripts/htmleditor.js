@@ -509,9 +509,8 @@
 
                 var wrap = editor.editor.getWrapperElement();
                 
-
+                
                 if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
-
                     editor.editor.state.fullScreenRestore = {
                         scrollTop: window.pageYOffset, 
                         scrollLeft: window.pageXOffset, 
@@ -561,13 +560,14 @@
                 toggleFullScreen();
                 
                 var wrap = editor.editor.getWrapperElement();
+                /*
                 window.onresize = function(event) {
                     document.documentElement.style.overflow = '';
                     var info = editor.editor.state.fullScreenRestore;
                     wrap.style.width = info.width; wrap.style.height = info.height;
                     window.scrollTo(info.scrollLeft, info.scrollTop);
                     // console.log('resize');
-                };
+                };*/
                 
             }
             
