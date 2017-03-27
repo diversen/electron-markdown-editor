@@ -35,6 +35,7 @@ function createWindow() {
     };
     
     mainWindow.setMenu(null);
+    // mainWindow.setFullScreen(true)
     mainWindow.showUrl(__dirname + '/index.html', args);
     
     mainWindow.on('closed', () => {

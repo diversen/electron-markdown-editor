@@ -422,6 +422,7 @@
                     '<ul class="uk-htmleditor-navbar-nav">',
                         '<li class="uk-htmleditor-button-code"><a>{:lblCodeview}</a></li>',
                         '<li class="uk-htmleditor-button-preview"><a>{:lblPreview}</a></li>',
+                        '<li><a data-htmleditor-button="fullscreen"><i class="uk-icon-expand"></i></a></li>',
                     '</ul>',
                 '</div>',
             '</div>',
@@ -563,7 +564,7 @@
                 } else {
 
                     //document.documentElement.style.overflow = '';
-                    document.documentElement.style.overflow = 'hidden';
+                    document.documentElement.style.overflow = '';
                     var info = editor.editor.state.fullScreenRestore;
                     wrap.style.width = info.width; wrap.style.height = info.height;
                     window.scrollTo(info.scrollLeft, info.scrollTop);
