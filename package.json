@@ -45,7 +45,7 @@
     "open": "0.0.5",
     "plist": "^1.2.0",
     "relative": "^3.0.2",
-    "uikit": "2.23.0"
+    "uikit": "^2.26"
   },
   "devDependencies": {
     "electron": "^1.4.15"

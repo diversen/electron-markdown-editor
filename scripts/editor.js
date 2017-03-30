@@ -17,7 +17,6 @@
 
     "use strict";
 
-    
     var editors = [];
 
     UI.component('htmleditor', {
@@ -27,24 +26,10 @@
             mode         : 'split',
             markdown     : false,
             autocomplete : true,
-            height       : 800,
-            maxsplitsize : 600,
-            codemirror   : { 
-                mode: 'htmlmixed', 
-                lineWrapping: true, 
-                dragDrop: false, 
-                autoCloseTags: true, 
-                matchTags: true, 
-                autoCloseBrackets: true, 
-                matchBrackets: true, 
-                indentUnit: 4, 
-                indentWithTabs: false, 
-                tabSize: 4, 
-                hintOptions: {
-                    completionSingle:false
-                } 
-            },
-            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'video', 'file', 'blockquote', 'listUl', 'listOl', 'table' ],
+            height       : 500,
+            maxsplitsize : 1000,
+            codemirror   : { mode: 'htmlmixed', lineWrapping: true, dragDrop: false, autoCloseTags: true, matchTags: true, autoCloseBrackets: true, matchBrackets: true, indentUnit: 4, indentWithTabs: false, tabSize: 4, hintOptions: {completionSingle:false} },
+            toolbar      : [ 'bold', 'italic', 'strike', 'link', 'image', 'blockquote', 'listUl', 'listOl' ],
             lblPreview   : 'Preview',
             lblCodeview  : 'HTML',
             lblMarkedview: 'Markdown'
@@ -68,14 +53,7 @@
 
         init: function() {
 
-            var $this = this; 
-               
-            var tpl;
-            if (PROCESS_CONTEXT === 'electron') {
-                tpl = UI.components.htmleditor.templateElectron;
-            } else {
-                tpl = UI.components.htmleditor.template;
-            }
+            var $this = this, tpl = UI.components.htmleditor.template;
 
             this.CodeMirror = this.options.CodeMirror || CodeMirror;
             this.buttons    = {};
@@ -97,32 +75,44 @@
                 $this.editor.save();
                 $this.element.trigger('input');
             });
-            
             this.code.find('.CodeMirror').css('height', this.options.height);
-            
-            this.preview.container = this.preview;
-            
+
+            // iframe mode?
+            if (this.options.iframe) {
+
+                this.iframe = UI.$('<iframe class="uk-htmleditor-iframe" frameborder="0" scrolling="auto" height="100" width="100%"></iframe>');
+                this.preview.append(this.iframe);
+
+                // must open and close document object to start using it!
+                this.iframe[0].contentWindow.document.open();
+                this.iframe[0].contentWindow.document.close();
+
+                this.preview.container = UI.$(this.iframe[0].contentWindow.document).find('body');
+
+                // append custom stylesheet
+                if (typeof(this.options.iframe) === 'string') {
+                    this.preview.container.parent().append('<link rel="stylesheet" href="'+this.options.iframe+'">');
+                }
+
+            } else {
+                this.preview.container = this.preview;
+            }
+
             UI.$win.on('resize load', UI.Utils.debounce(function() { $this.fit(); }, 200));
 
-            var previewContainer = $this.preview.parent(),
+            var previewContainer = this.iframe ? this.preview.container:$this.preview.parent(),
                 codeContent      = this.code.find('.CodeMirror-sizer'),
                 codeScroll       = this.code.find('.CodeMirror-scroll').on('scroll', UI.Utils.debounce(function() {
 
+                    if ($this.htmleditor.attr('data-mode') == 'tab') return;
+
+                    // calc position
                     var codeHeight      = codeContent.height() - codeScroll.height(),
-                        previewHeight   = previewContainer[0].scrollHeight - (previewContainer.height()),
+                        previewHeight   = previewContainer[0].scrollHeight - ($this.iframe ? $this.iframe.height() : previewContainer.height()),
                         ratio           = previewHeight / codeHeight,
                         previewPosition = codeScroll.scrollTop() * ratio;
-                    
-                    
-                    if ($this.htmleditor.attr('data-mode') == 'tab') {
-                        
-                        previewContainer.scrollTop(previewPosition);
-                        
-                        store.codeHeight = codeHeight; 
-                        store.scrollTop = codeScroll.scrollTop();
-                        return;
-                    }
-                    
+
+                    // apply new scroll
                     previewContainer.scrollTop(previewPosition);
 
                 }, 10));
@@ -130,27 +120,14 @@
             this.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function(e) {
 
                 e.preventDefault();
+
                 if ($this.htmleditor.attr('data-mode') == 'tab') {
 
                     $this.htmleditor.find('.uk-htmleditor-button-code, .uk-htmleditor-button-preview').removeClass('uk-active').filter(this).addClass('uk-active');
 
                     $this.activetab = UI.$(this).hasClass('uk-htmleditor-button-code') ? 'code' : 'preview';
                     $this.htmleditor.attr('data-active-tab', $this.activetab);
-                    
-                    if($this.activetab == 'preview') {
-                        
-                        var previewHeight = $('.uk-htmleditor-preview')[0].scrollHeight;
-                        var scrollTop = $('.uk-htmleditor-preview')[0].scrollTop;
-                        
-                        var ratio           = previewHeight / store.codeHeight;
-                        var scrollTop = store.scrollTop * ratio;
-                        
-                        previewContainer.scrollTop(scrollTop);
-                        return;
-                    }
-                    
                     $this.editor.refresh();
-                    
                 }
             });
 
@@ -271,7 +248,7 @@
         fit: function() {
 
             var mode = this.options.mode;
-            
+
             if (mode == 'split' && this.htmleditor.width() < this.options.maxsplitsize) {
                 mode = 'tab';
             }
@@ -287,18 +264,10 @@
                     .addClass('uk-active');
             }
 
-            var wrapperHeight = $('.uk-htmleditor-content').height();
-            
-            // var newHeight = window.innerHeight;
-            var height = this.editor.getWrapperElement().style.height;
-            $('.CodeMirror').css('height', wrapperHeight + 'px'); // CodeMirror cm-s-default CodeMirror-wrap
-
             this.editor.refresh();
             this.preview.parent().css('height', this.code.height());
-            
-            // mode = 'tab'
+
             this.htmleditor.attr('data-mode', mode);
-                        
         },
 
         redraw: function() {
@@ -420,24 +389,6 @@
             '</div>',
         '</div>'
     ].join('');
-    
-    UI.components.htmleditor.templateElectron = [
-        '<div class="uk-htmleditor uk-clearfix" data-mode="split">',
-            '<div class="uk-htmleditor-navbar">',
-                '<ul class="uk-htmleditor-navbar-nav uk-htmleditor-toolbar"></ul>',
-                '<div class="uk-htmleditor-navbar-flip">',
-                    '<ul class="uk-htmleditor-navbar-nav">',
-                        '<li class="uk-htmleditor-button-code"><a>{:lblCodeview}</a></li>',
-                        '<li class="uk-htmleditor-button-preview"><a>{:lblPreview}</a></li>',
-                    '</ul>',
-                '</div>',
-            '</div>',
-            '<div class="uk-htmleditor-content">',
-                '<div class="uk-htmleditor-code"></div>',
-                '<div class="uk-htmleditor-preview"><div></div></div>',
-            '</div>',
-        '</div>'
-    ].join('');
 
 
     UI.plugin('htmleditor', 'base', {
@@ -474,14 +425,6 @@
                     title  : 'Image',
                     label  : '<i class="uk-icon-picture-o"></i>'
                 },
-                video : {
-                    title  : 'Video',
-                    label  : '<i class="uk-icon-video-camera"></i>'
-                },
-                file : {
-                    title  : 'File',
-                    label  : '<i class="uk-icon-file"></i>'
-                },
                 listUl : {
                     title  : 'Unordered List',
                     label  : '<i class="uk-icon-list-ul"></i>'
@@ -489,10 +432,6 @@
                 listOl : {
                     title  : 'Ordered List',
                     label  : '<i class="uk-icon-list-ol"></i>'
-                },
-                table : {
-                    title  : 'Table',
-                    label  : '<i class="uk-icon-table"></i>'
                 }
 
             });
@@ -502,40 +441,11 @@
             addAction('strike', '<del>$1</del>');
             addAction('blockquote', '<blockquote><p>$1</p></blockquote>', 'replaceLine');
             addAction('link', '<a href="http://">$1</a>');
+            addAction('image', '<img src="http://" alt="$1">');
 
-            var imageFn = function () {
-                if (PROCESS_CONTEXT === 'electron'){
-                    openImageFile();
-                } else {
-                    $.UIkit.modal("#image-modal").show();
-                }
-            };
-            
-            var videoFn = function () {
-                if (PROCESS_CONTEXT == 'electron'){
-                    openVideoFile();
-                } else {
-                    $.UIkit.modal("#video-modal").show();
-                }
-            };
-            
-            var fileFn = function () {
-                if (PROCESS_CONTEXT == 'electron'){
-                    openFileFile();
-                } else {
-                    $.UIkit.modal("#file-modal").show();
-                }
-            };
-            
-            var tableFn = function () {  
-                $.UIkit.modal("#table-modal").show();
-            };
-            
-            
             var listfn = function() {
-                
                 if (editor.getCursorMode() == 'html') {
-                    
+
                     var cm      = editor.editor,
                         pos     = cm.getDoc().getCursor(true),
                         posend  = cm.getDoc().getCursor(false);
@@ -548,50 +458,6 @@
                     cm.focus();
                 }
             };
-            
-            var toggleFullScreen = function () {
-
-                editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
-
-                var wrap = editor.editor.getWrapperElement();
-                
-                if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
-                    editor.editor.state.fullScreenRestore = {
-                        scrollTop: window.pageYOffset, 
-                        scrollLeft: window.pageXOffset, 
-                        width: wrap.style.width, 
-                        height: wrap.style.height
-                    };
-                    
-                    wrap.style.width  = '';
-                    wrap.style.height = editor.content.height()+'px';
-                    document.documentElement.style.overflow = 'hidden';
-
-                } else {
-
-                    //document.documentElement.style.overflow = '';
-                    document.documentElement.style.overflow = '';
-                    var info = editor.editor.state.fullScreenRestore;
-                    wrap.style.width = info.width; wrap.style.height = info.height;
-                    window.scrollTo(info.scrollLeft, info.scrollTop);
-                }
-            };
-            
-            editor.on('action.image', function() {
-                imageFn();
-            });
-            
-            editor.on('action.video', function() {
-                videoFn();
-            });
-            
-            editor.on('action.file', function() {
-                fileFn();
-            });
-            
-            editor.on('action.table', function() {
-                tableFn();
-            });
 
             editor.on('action.listUl', function() {
                 listfn();
@@ -600,38 +466,37 @@
             editor.on('action.listOl', function() {
                 listfn();
             });
-            
-            if (PROCESS_CONTEXT === 'electron'){
-                
-                toggleFullScreen();
-                
+
+            editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
+                editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
+
                 var wrap = editor.editor.getWrapperElement();
-                /*
-                window.onresize = function(event) {
+
+                if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
+
+                    editor.editor.state.fullScreenRestore = {scrollTop: window.pageYOffset, scrollLeft: window.pageXOffset, width: wrap.style.width, height: wrap.style.height};
+                    wrap.style.width  = '';
+                    wrap.style.height = editor.content.height()+'px';
+                    document.documentElement.style.overflow = 'hidden';
+
+                } else {
+
                     document.documentElement.style.overflow = '';
                     var info = editor.editor.state.fullScreenRestore;
                     wrap.style.width = info.width; wrap.style.height = info.height;
                     window.scrollTo(info.scrollLeft, info.scrollTop);
-                    // console.log('resize');
-                };*/
-                
-            }
-            
-            editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function () {
-                toggleFullScreen();
+                }
 
-                setTimeout(function () {
+                setTimeout(function() {
                     editor.fit();
                     UI.$win.trigger('resize');
                 }, 50);
             });
 
-
-            // editor.addShortcut(['Ctrl-S', 'Cmd-S'], function() { editor.element.trigger('htmleditor-save', [editor]); });
+            editor.addShortcut(['Ctrl-S', 'Cmd-S'], function() { editor.element.trigger('htmleditor-save', [editor]); });
             editor.addShortcutAction('bold', ['Ctrl-B', 'Cmd-B']);
 
             function addAction(name, replace, mode) {
-                // console.log(name);
                 editor.on('action.'+name, function() {
                     if (editor.getCursorMode() == 'html') {
                         editor[mode == 'replaceLine' ? 'replaceLine' : 'replaceSelection'](replace);
@@ -646,7 +511,7 @@
         init: function(editor) {
 
             var parser = editor.options.mdparser || marked || null;
-            
+
             if (!parser) return;
 
             if (editor.options.markdown) {
@@ -658,77 +523,18 @@
             addAction('strike', '~~$1~~');
             addAction('blockquote', '> $1', 'replaceLine');
             addAction('link', '[$1](http://)');
-
-            editor.on('action.image', function () {
-
-
-                if (editor.getCursorMode() == 'markdown') {
-                    
-                    var cm      = editor.editor,
-                        pos     = cm.getDoc().getCursor(true),
-                        posend  = cm.getDoc().getCursor(false);
-
-                    store.pos = pos;
-
-                    cm.focus();
-                }
-                
-            });
-            
-            editor.on('action.video', function () {
-
-                if (editor.getCursorMode() == 'markdown') {
-                    
-                    var cm      = editor.editor,
-                        pos     = cm.getDoc().getCursor(true),
-                        posend  = cm.getDoc().getCursor(false);
-
-                    store.pos = pos;
-
-                    cm.focus();
-                }
-                
-            });
-            
-            editor.on('action.file', function () {
-
-
-                if (editor.getCursorMode() == 'markdown') {
-                    
-                    var cm      = editor.editor,
-                        pos     = cm.getDoc().getCursor(true),
-                        posend  = cm.getDoc().getCursor(false);
-
-                    store.pos = pos;
-                    cm.focus();
-                }
-                
-            });
-            
-            editor.on('action.table', function () {
-
-                if (editor.getCursorMode() == 'markdown') {
-                    
-                    var cm      = editor.editor,
-                        pos     = cm.getDoc().getCursor(true),
-                        posend  = cm.getDoc().getCursor(false);
-
-                    store.pos = pos;
-                    cm.focus();
-                }
-                
-            });
+            addAction('image', '![$1](http://)');
 
             editor.on('action.listUl', function() {
+
                 if (editor.getCursorMode() == 'markdown') {
-                      
+
                     var cm      = editor.editor,
                         pos     = cm.getDoc().getCursor(true),
                         posend  = cm.getDoc().getCursor(false);
 
-                    
                     for (var i=pos.line; i<(posend.line+1);i++) {
-                        cm.replaceRange('- '+cm.getLine(i), { line: i, ch: 0 }, { line: i, ch: cm.getLine(i).length });
+                        cm.replaceRange('* '+cm.getLine(i), { line: i, ch: 0 }, { line: i, ch: cm.getLine(i).length });
                     }
 
                     cm.setCursor({ line: posend.line, ch: cm.getLine(posend.line).length });
@@ -765,7 +571,7 @@
 
             editor.on('renderLate', function() {
                 if (editor.editor.options.mode == 'gfm') {
-                    editor.currentvalue = parser.render(editor.currentvalue);
+                    editor.currentvalue = parser(editor.currentvalue);
                 }
             });
 
@@ -784,12 +590,12 @@
                     enableMarkdown();
                     this.render();
                 },
-                
                 disableMarkdown: function() {
                     this.editor.setOption('mode', 'htmlmixed');
                     this.htmleditor.find('.uk-htmleditor-button-code a').html(this.options.lblCodeview);
                     this.render();
                 }
+
             });
 
             // switch markdown mode on event

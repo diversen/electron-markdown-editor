@@ -55,10 +55,10 @@ function createWindow() {
 
 app.on('ready', function () {
     mainWindow = createWindow();
-    /*
+    
     mainWindow.on('resize', function () {
         //console.log('resize'); 
-    });*/
+    });
 });
 
 app.on('activate', function () {
