@@ -10,8 +10,7 @@ A markdown editor for the desktop using:
 
 * [Electron](http://electron.atom.io/)
 * The CSS frammework [Uikit](http://getuikit.com/) 
-* The Uikit [HTML-editor](http://getuikit.com/docs/htmleditor.html)
-
+* The Uikit [HTML-editor](http://getuikit.com/docs/htmleditor.html) which uses the [CodeMirror editor](https://codemirror.net/)
 ## Features
 
 * WYSIWYG
