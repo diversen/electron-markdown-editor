@@ -48,7 +48,7 @@ const template = [
           //if (focusedWindow)
             saveFileAs();
         },
-        accelerator: 'CmdOrCtrl+S',
+        accelerator: 'CmdOrCtrl+Shift+S',
         role: 'save-as'
       }, 
       
