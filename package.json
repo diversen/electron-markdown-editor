@@ -43,7 +43,7 @@
     "markdown-table-template": "^1.0.1",
     "mathjax": "^2.7.2",
     "open": "0.0.5",
-    "plist": "^1.2.0",
+    "plist": "^3.0.1",
     "relative": "^3.0.2",
     "uikit": "^2.27.4"
   },
