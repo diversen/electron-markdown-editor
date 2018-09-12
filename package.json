@@ -2,7 +2,7 @@
   "name": "electron-markdown-editor",
   "productName": "ElectronMarkdownEditor",
   "version": "2.1.8",
-  "electronVersion": "1.7.8",
+  "electronVersion": "2.0.9",
   "description": "A markdown editor built with electron, uikit, and markdown-it",
   "keywords": [
     "markdown",
@@ -31,7 +31,7 @@
   "dependencies": {
     "codemirror": "^5.30.0",
     "detect-process": "^1.0.4",
-    "electron": "^1.7.8",
+    "electron": "^2.0.9",
     "electron-debug": "^1.4.0",
     "electron-window": "^0.8.1",
     "highlightjs": "^8.7.0",
@@ -47,7 +47,5 @@
     "relative": "^3.0.2",
     "uikit": "^2.27.4"
   },
-  "devDependencies": {
-    "electron": "^1.7.8"
-  }
+  "devDependencies": {}
 }
