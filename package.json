@@ -38,11 +38,10 @@
     "is-defined-eval": "^1.0.3",
     "is-electron": "^2.1.0",
     "isbinaryfile": "^3.0.2",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "markdown-it-embed-mathjax-highlight": "^1.0.5",
     "markdown-table-template": "^1.0.1",
     "mathjax": "^2.7.2",
-    "open": "0.0.5",
     "plist": "^3.0.1",
     "relative": "^3.0.2",
     "uikit": "^2.27.4"
