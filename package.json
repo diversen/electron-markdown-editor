@@ -38,7 +38,7 @@
     "is-defined-eval": "^1.0.3",
     "is-electron": "^2.1.0",
     "isbinaryfile": "^3.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.4.0",
     "markdown-it-embed-mathjax-highlight": "^1.0.5",
     "markdown-table-template": "^1.0.1",
     "mathjax": "^2.7.2",
