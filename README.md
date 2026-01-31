@@ -55,7 +55,7 @@ Use npm:
 
 Global: 
 
-    sudo npm install electron-markdown-editor -g
+    npm install -g electron-markdown-editor
     
 You can specify a file on the commandline. E.g.: 
     
@@ -67,6 +67,15 @@ You can specify a file on the commandline. E.g.:
     cd electron-markdown-editor 
     npm install
 
-Run electron-markdown-editor: 
+Run in development (Vite + Electron): 
+
+    npm run dev:all
+
+Run production build locally:
+
+    npm run build
+    npm run start
+
+Run electron-markdown-editor (legacy CLI):
 
     ./bin/electron-markdown-editor README.md
