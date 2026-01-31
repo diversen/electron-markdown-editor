@@ -1,11 +1,35 @@
-const {dialog} = require('electron').remote
-const fs = require('fs');
-const isDefined = require('is-defined-eval');
+var api = window.api;
 
-// Shell var a const in the main process. 
-// This is the rederer prodcess - so it is ok. 
-const {shell} = require('electron');
+var pendingOpenFile = null;
+var pendingOpenTimer = null;
 
+function getEditor() {
+    var editorEl = $('.CodeMirror')[0];
+    if (!editorEl || !editorEl.CodeMirror) {
+        return null;
+    }
+    return editorEl.CodeMirror;
+}
+
+function schedulePendingOpen(fileName) {
+    pendingOpenFile = fileName;
+    if (pendingOpenTimer) {
+        return;
+    }
+    pendingOpenTimer = setInterval(function () {
+        var editor = getEditor();
+        if (!editor) {
+            return;
+        }
+        clearInterval(pendingOpenTimer);
+        pendingOpenTimer = null;
+        var fileToOpen = pendingOpenFile;
+        pendingOpenFile = null;
+        if (fileToOpen) {
+            readMarkdownFile(fileToOpen);
+        }
+    }, 100);
+}
 
 var insertLine = function (doc, pos, text) {
     var cursor = doc.getCursor(); // gets the line number in the cursor position
@@ -30,21 +54,24 @@ $(document).ready(function () {
     });
 });
 
-$(document).on('click', "a", function (event) {
+$(document).on('click', 'a', function (event) {
     event.preventDefault();
     var url = $(this).attr('href');
     if (url) {
-        shell.openExternal(url);
+        api.openExternal(url);
     }
 });
 
 // Read file if given from commandline
 $(document).ready(function () {
-    var isBinaryFile = require("isbinaryfile");
-    if (__args__.file !== null) {
-        if (!isBinaryFile.sync(__args__.file)) {
-            readMarkdownFile(__args__.file);
-        }
+    var params = new URLSearchParams(window.location.search);
+    var startupFile = params.get('file');
+    if (startupFile) {
+        api.isBinaryFile(startupFile).then(function (isBinary) {
+            if (!isBinary) {
+                readMarkdownFile(startupFile);
+            }
+        });
     }
 });
 
@@ -73,19 +100,12 @@ function getFilesAsMd(files) {
 function readMarkdownFile(fileName) {
 
     store.currentFile = fileName;
-    fs.readFile(fileName, 'utf-8', function (err, data) {
-        if (err) {
-            store.currentFile = null;
-            UIkit.notify({
-                message: err,
-                status: 'error',
-                timeout: 2000,
-                pos: 'bottom-left'
-            });
-            store.currentFile = null;
-            return false;
-        }
-        var editor = $('.CodeMirror')[0].CodeMirror;
+    var editor = getEditor();
+    if (!editor) {
+        schedulePendingOpen(fileName);
+        return false;
+    }
+    api.readTextFile(fileName).then(function (data) {
         editor.setValue(data);
         editor.refresh();
         UIkit.notify({
@@ -96,36 +116,29 @@ function readMarkdownFile(fileName) {
         });
         store.currentFile = fileName;
         return true;
+    }).catch(function (err) {
+        store.currentFile = null;
+        UIkit.notify({
+            message: err,
+            status: 'error',
+            timeout: 2000,
+            pos: 'bottom-left'
+        });
+        store.currentFile = null;
+        return false;
     });
 }
 
-function openFile() {
-    dialog.showOpenDialog({filters: [
-            {name: 'markdown', extensions: ['txt', 'md', 'markdown']}
-        ]}, function (fileNames) {
-        if (fileNames === undefined) {
-            return;
-        }
-
-        var fileName = fileNames[0];
-        readMarkdownFile(fileName);
-
-    });
+async function openFile() {
+    var fileName = await api.openMarkdownDialog();
+    if (!fileName) {
+        return;
+    }
+    readMarkdownFile(fileName);
 }
 
 function saveMarkdownFile(fileName, data) {
-    fs.writeFile(fileName, data, function (err) {
-        if (err) {
-            store.currentFile = null;
-            UIkit.notify({
-                message: err,
-                status: 'error',
-                timeout: 2000,
-                pos: 'bottom-left'
-            });
-            return false;
-        }
-
+    api.writeTextFile(fileName, data).then(function () {
         store.currentFile = fileName;
         UIkit.notify({
             message: 'Saved file ' + fileName,
@@ -134,6 +147,15 @@ function saveMarkdownFile(fileName, data) {
             pos: 'bottom-left'
         });
         return true;
+    }).catch(function (err) {
+        store.currentFile = null;
+        UIkit.notify({
+            message: err,
+            status: 'error',
+            timeout: 2000,
+            pos: 'bottom-left'
+        });
+        return false;
     });
 }
 
@@ -151,85 +173,75 @@ function saveFile() {
     }
 }
 
-function saveFileAs() {
-    dialog.showSaveDialog({filters: [
-            {name: 'Save as', extensions: ['txt', 'md', 'markdown']}
-        ]}, function (fileName) {
-        if (fileName === undefined) {
-            return;
-        }
+async function saveFileAs() {
+    var fileName = await api.saveMarkdownDialog();
+    if (!fileName) {
+        return;
+    }
 
-        var editor = $('.CodeMirror')[0].CodeMirror;
-        var value = editor.getValue();
-        saveMarkdownFile(fileName, value);
-
-    });
+    var editor = $('.CodeMirror')[0].CodeMirror;
+    var value = editor.getValue();
+    saveMarkdownFile(fileName, value);
 }
 
-function openImageFile() {
-    dialog.showOpenDialog({filters: [{name: 'Insert image', extensions: ['jpg', 'gif', 'svg', 'png', 'mp4']}]}, function (fileNames) {
-        if (fileNames === undefined) {
-            return;
-        }
+async function openImageFile() {
+    var fileName = await api.openImageDialog();
+    if (!fileName) {
+        return;
+    }
 
-        var fileName = fileNames[0];
-        title = 'title';
+    title = 'title';
 
-        var editor = $('.CodeMirror')[0].CodeMirror;
-        editor.refresh();
+    var editor = $('.CodeMirror')[0].CodeMirror;
+    editor.refresh();
 
-        var doc = editor.getDoc();
-        doc.setCursor(store.pos);
-        editor.focus();
+    var doc = editor.getDoc();
+    doc.setCursor(store.pos);
+    editor.focus();
 
-        var text = '![' + title + '](' + fileName + ")";
+    var text = '![' + title + '](' + fileName + ")";
 
-        insertLine(doc, store.pos, text);
-    });
+    insertLine(doc, store.pos, text);
 }
 
-function openVideoFile() {
-    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['mp4']}]}, function (fileNames) {
-        if (fileNames === undefined) {
-            return;
-        }
+async function openVideoFile() {
+    var fileName = await api.openVideoDialog();
+    if (!fileName) {
+        return;
+    }
 
-        var fileName = fileNames[0];
-        title = 'title';
+    title = 'title';
 
-        var editor = $('.CodeMirror')[0].CodeMirror;
-        editor.refresh();
+    var editor = $('.CodeMirror')[0].CodeMirror;
+    editor.refresh();
 
-        var doc = editor.getDoc();
-        doc.setCursor(store.pos);
-        editor.focus();
+    var doc = editor.getDoc();
+    doc.setCursor(store.pos);
+    editor.focus();
 
-        var text = '![' + title + '](' + fileName + ")";
+    var text = '![' + title + '](' + fileName + ")";
 
-        insertLine(doc, store.pos, text);
-    });
+    insertLine(doc, store.pos, text);
 };
 
-function openFileFile() {
-    dialog.showOpenDialog({filters: [{name: 'Insert video', extensions: ['*']}]}, function (fileNames) {
-        if (fileNames === undefined) {
-            return;
-        }
+async function openFileFile() {
+    var fileName = await api.openFileDialog();
+    if (!fileName) {
+        return;
+    }
 
-        var fileName = fileNames[0];
-        title = 'title';
+    title = 'title';
 
-        var editor = $('.CodeMirror')[0].CodeMirror;
-        editor.refresh();
+    var editor = $('.CodeMirror')[0].CodeMirror;
+    editor.refresh();
 
-        var doc = editor.getDoc();
-        doc.setCursor(store.pos);
-        editor.focus();
+    var doc = editor.getDoc();
+    doc.setCursor(store.pos);
+    editor.focus();
 
-        var text = '[' + title + '](' + fileName + ")";
+    var text = '[' + title + '](' + fileName + ")";
 
-        insertLine(doc, store.pos, text);
-    });
+    insertLine(doc, store.pos, text);
 };
 
 $(document).ready(function () {
@@ -264,3 +276,25 @@ $(document).ready(function () {
     });
 });
 
+api.onMenuOpenFile(function () {
+    openFile();
+});
+
+api.onMenuSaveFile(function () {
+    saveFile();
+});
+
+api.onMenuSaveFileAs(function () {
+    saveFileAs();
+});
+
+api.onAppOpenFile(function (event, filePath) {
+    if (!filePath) {
+        return;
+    }
+    api.isBinaryFile(filePath).then(function (isBinary) {
+        if (!isBinary) {
+            readMarkdownFile(filePath);
+        }
+    });
+});

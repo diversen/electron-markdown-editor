@@ -1,13 +1,42 @@
 #!/usr/bin/env node
 
-const electronPath = require( 'electron' ) ;
-const childProcess = require( 'child_process' ) ;
+const electronPath = require('electron');
+const childProcess = require('child_process');
+const fs = require('fs');
+const path = require('path');
 
 // Adjust the command line arguments: remove the "node <code.js>" part
-const args = process.argv.slice( 2 ) ;  
+const args = process.argv.slice(2);
 // ... and insert the root path of our application (it's the parent directory)
 // as the first argument
-args.unshift( __dirname + '/../' ) ;
+const appPath = path.join(__dirname, '..');
+args.unshift(appPath);
+
+if (args.length === 1) {
+    console.log('Usage: electron-markdown-editor <file.md>');
+    console.log('Example: electron-markdown-editor README.md');
+}
+
+if (process.platform === 'linux' && !args.includes('--no-sandbox')) {
+    console.warn('[electron-markdown-editor] Enabling --no-sandbox by default on Linux.');
+    args.push('--no-sandbox');
+}
+
+if (process.platform === 'linux') {
+    const sandboxPath = path.join(path.dirname(electronPath), 'chrome-sandbox');
+    try {
+        const stats = fs.statSync(sandboxPath);
+        const hasSuid = (stats.mode & 0o4000) === 0o4000;
+        if (!hasSuid) {
+            console.warn('[electron-markdown-editor] chrome-sandbox is not setuid. You may need:');
+            console.warn(`sudo chown root:root ${sandboxPath}`);
+            console.warn(`sudo chmod 4755 ${sandboxPath}`);
+            console.warn('Or run with --no-sandbox (less secure).');
+        }
+    } catch (err) {
+        // Ignore missing sandbox helper.
+    }
+}
 
 // Run electron
-childProcess.spawn( electronPath , args , { stdio: 'inherit' } ) ; 
+childProcess.spawn(electronPath, args, { stdio: 'inherit' });

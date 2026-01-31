@@ -1,8 +1,8 @@
 {
   "name": "electron-markdown-editor",
   "productName": "ElectronMarkdownEditor",
-  "version": "2.1.8",
-  "electronVersion": "2.0.9",
+  "version": "3.0.2",
+  "electronVersion": "40.0.0",
   "description": "A markdown editor built with electron, uikit, and markdown-it",
   "keywords": [
     "markdown",
@@ -18,6 +18,8 @@
   },
   "scripts": {
     "clean:dist": "rm -rf ./dist",
+    "start": "electron .",
+    "start:no-sandbox": "electron . --no-sandbox",
     "build:osx": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:win": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=win32 --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:linux": "electron-packager . $npm_package_productName --out=dist --arch=x64 --platform=linux --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version"
@@ -31,11 +33,8 @@
   "dependencies": {
     "codemirror": "^5.30.0",
     "detect-process": "^1.0.4",
-    "electron": "^2.0.9",
-    "electron-debug": "^1.4.0",
-    "electron-window": "^0.8.1",
+    "electron": "^40.0.0",
     "highlightjs": "^8.7.0",
-    "is-defined-eval": "^1.0.3",
     "is-electron": "^2.1.0",
     "isbinaryfile": "^3.0.2",
     "jquery": "^3.4.1",
@@ -46,5 +45,8 @@
     "relative": "^3.0.2",
     "uikit": "^2.27.4"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": ">=24.13.0"
+  }
 }

@@ -4,19 +4,14 @@
         <title>Markdown Editor</title>
         <meta charset="UTF-8">
         
-        <script src="node_modules/detect-process/dist/detectProcess.js"></script>
+        <script src="node_modules/jquery/dist/jquery.js"></script>
         <script>
-        
-        const PROCESS_CONTEXT = detectProcess.getName();
-        
-            // Only electron menu - if env is electron
-            if (PROCESS_CONTEXT === 'electron') {
-                document.write('<script src="scripts/menu.js"><\/script>');
-                window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.js');
-            } else {
-                document.write('<script src="https://code.jquery.com/jquery-2.1.4.min.js"><\/script>');
-            }
-        
+        const PROCESS_CONTEXT = 'electron';
+        if (!window.jQuery) {
+            var script = document.createElement('script');
+            script.src = 'https://code.jquery.com/jquery-2.1.4.min.js';
+            document.head.appendChild(script);
+        }
         </script>
 
         <!-- We use uikit and the uikit components: notify, htmleditor
@@ -63,16 +58,7 @@
         <script src="scripts/store.js"></script>
 
         <!-- Highlight.js Note: Can not make it work through npm -->
-        <script>
-
-            // File browsing
-            if (PROCESS_CONTEXT === 'electron') {
-                document.write('<script type="text/javascript" src="scripts/electron.js"><\/script>');
-            } else {
-                document.write('<script type="text/javascript" src="scripts/web.js"><\/script>');
-            }
-
-        </script>
+        <script type="text/javascript" src="scripts/electron.js"></script>
     </head>
     <body>
         
