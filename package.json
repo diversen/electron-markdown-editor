@@ -1,7 +1,7 @@
 {
   "name": "electron-markdown-editor",
   "productName": "ElectronMarkdownEditor",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "electronVersion": "40.0.0",
   "description": "A markdown editor built with electron, uikit, and markdown-it",
   "keywords": [
@@ -34,12 +34,12 @@
     "@highlightjs/cdn-assets": "^11.11.1",
     "codemirror": "5.65.20",
     "electron": "^40.0.0",
-    "isbinaryfile": "^3.0.2",
+    "isbinaryfile": "^3.0.3",
     "jquery": "^3.7.1",
     "katex": "^0.16.22",
     "markdown-it": "^14.1.0",
     "markdown-table-template": "^1.0.1",
-    "plist": "^3.0.1",
+    "plist": "^3.1.0",
     "relative": "^3.0.2",
     "uikit": "^2.27.4"
   },
