@@ -48,6 +48,7 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.0",
     "@codemirror/state": "^6.0.0",
+    "@codemirror/theme-one-dark": "^6.0.0",
     "codemirror": "^6.0.0",
     "electron": "^40.0.0",
     "highlight.js": "^11.0.0",

@@ -7,6 +7,7 @@
   --muted: #6b6b6b;
   --accent: #1d6b53;
   --border: #e2d9cc;
+  --shadow: rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -18,6 +19,33 @@ body {
   background: var(--bg);
   color: var(--ink);
   height: 100vh;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #12110f;
+  --panel: #1a1916;
+  --ink: #efe7db;
+  --muted: #b0a79b;
+  --accent: #7bd4b1;
+  --border: #2c2a25;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f2ee;
+  --panel: #fffaf3;
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #1d6b53;
+  --border: #e2d9cc;
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+
+:root[data-theme="dark"] .topbar {
+  background: linear-gradient(135deg, rgba(28, 27, 24, 0.92) 0%, rgba(22, 21, 19, 0.92) 100%);
 }
 
 #app {
@@ -32,7 +60,8 @@ body {
   justify-content: flex-start;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, #fff5e8 0%, #f4efe8 100%);
+  background: linear-gradient(135deg, rgba(255, 245, 232, 0.85) 0%, rgba(244, 239, 232, 0.85) 100%);
+  box-shadow: 0 1px 0 var(--shadow);
 }
 
 .toolbar {
@@ -68,6 +97,10 @@ body {
 .toolbar button:hover {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+:root[data-theme="dark"] .toolbar button {
+  background: color-mix(in srgb, var(--panel) 70%, #0f0e0d 30%);
 }
 
 .toolbar .sep {
@@ -113,14 +146,32 @@ body {
   padding: 8px;
 }
 
+#preview img,
+#preview video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+#preview video {
+  max-height: 70vh;
+}
+
 #preview h1, #preview h2, #preview h3 {
   margin-top: 1.2em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hljs {
+    background: #141312;
+    color: #e9e1d6;
+  }
 }
 
 .statusbar {
   padding: 8px 16px;
   border-top: 1px solid var(--border);
-  background: #f8f3ea;
+  background: color-mix(in srgb, var(--panel) 70%, var(--bg) 30%);
   font-size: 12px;
   color: var(--muted);
 }
@@ -155,6 +206,11 @@ dialog input {
   border-radius: 8px;
   padding: 6px 8px;
   background: #fff;
+}
+
+:root[data-theme="dark"] dialog input {
+  background: #12110f;
+  color: var(--ink);
 }
 
 .dialog-actions {

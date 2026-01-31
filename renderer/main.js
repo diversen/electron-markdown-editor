@@ -1,10 +1,12 @@
 import "katex/dist/katex.min.css";
 import "highlight.js/styles/github.css";
+import "highlight.js/styles/github-dark.css";
 import "./style.css";
 
 import { EditorView, basicSetup } from "codemirror";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Compartment } from "@codemirror/state";
 import { markdown } from "@codemirror/lang-markdown";
+import { oneDark } from "@codemirror/theme-one-dark";
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import renderMathInElement from "katex/contrib/auto-render";
@@ -14,6 +16,19 @@ const statusEl = document.querySelector("#status");
 const editorHost = document.querySelector("#editor");
 
 let currentFilePath = null;
+const themeToggleButton = document.querySelector('[data-action="toggleTheme"]');
+
+function prefersDark() {
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+function applyTheme(theme) {
+  const next = theme === "dark" || theme === "light" ? theme : prefersDark() ? "dark" : "light";
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem("theme", next);
+}
+
+applyTheme(localStorage.getItem("theme"));
 
 const md = new MarkdownIt({
   html: true,
@@ -86,9 +101,54 @@ const updateListener = EditorView.updateListener.of((update) => {
   }
 });
 
+const lightSurface = EditorView.theme({
+  ".cm-scroller": { backgroundColor: "#fffaf3", color: "#1a1a1a" },
+  ".cm-content": { color: "#1a1a1a" },
+  ".cm-gutters": { backgroundColor: "#fffaf3", color: "#6b6b6b", border: "none" },
+});
+
+const darkSurface = EditorView.theme(
+  {
+    ".cm-scroller": { backgroundColor: "#1a1916", color: "#efe7db" },
+    ".cm-content": { color: "#efe7db" },
+    ".cm-gutters": { backgroundColor: "#1a1916", color: "#b0a79b", border: "none" },
+  },
+  { dark: true }
+);
+
+const selectionTheme = EditorView.theme(
+  {
+    ".cm-selectionBackground": { backgroundColor: "rgba(0, 0, 0, 0.75)" },
+    "&.cm-focused .cm-selectionBackground": { backgroundColor: "rgba(0, 0, 0, 0.85)" },
+    ".cm-content ::selection": { backgroundColor: "rgba(0, 0, 0, 0.85)", color: "#ffffff" },
+    ".cm-line.cm-activeLine": { backgroundColor: "transparent" },
+    ".cm-gutterElement.cm-activeLineGutter": { backgroundColor: "transparent" },
+    ".cm-selectionMatch": { backgroundColor: "rgba(0, 0, 0, 0.6)" },
+  },
+  { dark: true }
+);
+
+function editorThemeExtension() {
+  const explicitTheme = document.documentElement.dataset.theme;
+  const useDark = explicitTheme === "dark";
+  return useDark ? [oneDark, selectionTheme, darkSurface] : [lightSurface];
+}
+
+const themeCompartment = new Compartment();
+
+function editorExtensions() {
+  return [
+    basicSetup,
+    markdown(),
+    EditorView.lineWrapping,
+    updateListener,
+    themeCompartment.of(editorThemeExtension()),
+  ];
+}
+
 const state = EditorState.create({
   doc: "",
-  extensions: [basicSetup, markdown(), EditorView.lineWrapping, updateListener],
+  extensions: editorExtensions(),
 });
 
 const view = new EditorView({
@@ -97,6 +157,15 @@ const view = new EditorView({
 });
 
 renderPreview("");
+
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme;
+  const next = current === "dark" ? "light" : "dark";
+  applyTheme(next);
+  view.dispatch({ effects: themeCompartment.reconfigure(editorThemeExtension()) });
+}
+
+themeToggleButton?.addEventListener("click", toggleTheme);
 
 let syncingScroll = false;
 view.scrollDOM.addEventListener("scroll", () => {

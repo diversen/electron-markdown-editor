@@ -75,7 +75,3 @@ Run production build locally:
 
     npm run build
     npm run start
-
-Run electron-markdown-editor (legacy CLI):
-
-    ./bin/electron-markdown-editor README.md
