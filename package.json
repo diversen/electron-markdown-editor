@@ -3,14 +3,14 @@
   "productName": "ElectronMarkdownEditor",
   "version": "3.1.0",
   "electronVersion": "40.0.0",
-  "description": "A markdown editor built with electron, uikit, and markdown-it",
+  "description": "A markdown editor built with electron, codemirror, and markdown-it",
   "keywords": [
     "markdown",
     "editor",
     "electron",
     "commonmark",
     "markdown-it",
-    "uikit"
+    "codemirror"
   ],
   "main": "app.js",
   "bin": {

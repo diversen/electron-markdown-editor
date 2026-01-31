@@ -9,8 +9,10 @@
 A markdown editor for the desktop using:
 
 * [Electron](http://electron.atom.io/)
-* The CSS frammework [Uikit](http://getuikit.com/) 
-* The Uikit [HTML-editor](http://getuikit.com/docs/htmleditor.html) which uses the [CodeMirror editor](https://codemirror.net/)
+* [CodeMirror 6](https://codemirror.net/)
+* [markdown-it](https://github.com/markdown-it/markdown-it)
+* [KaTeX](https://katex.org/)
+* [highlight.js](https://highlightjs.org/)
 ## Features
 
 * WYSIWYG
@@ -38,11 +40,11 @@ echo "hello world";
 ?>
 ~~~
 
-* Live preview of Math [MathJax](https://www.mathjax.org/), e.g.:
+* Live preview of Math [KaTeX](https://katex.org/), e.g.:
 
 $$\sum_{i=0}^n i^2 = \frac{(n^2+n)(2n+1)}{6}$$
 
-(You will not be able to see parsing of MathJax on github.com or npmjs.com - but only when using the editor).
+(You will not be able to see parsing of KaTeX on github.com or npmjs.com - but only when using the editor).
 
 
 * The parsing of markdown is done with [markdown-it](https://github.com/markdown-it/markdown-it) 
@@ -68,4 +70,3 @@ You can specify a file on the commandline. E.g.:
 Run electron-markdown-editor: 
 
     ./bin/electron-markdown-editor README.md
-
