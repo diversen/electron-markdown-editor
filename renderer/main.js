@@ -8,7 +8,6 @@ import { markdown } from "@codemirror/lang-markdown";
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import renderMathInElement from "katex/contrib/auto-render";
-import mdtable from "markdown-table-template";
 
 const previewEl = document.querySelector("#preview");
 const statusEl = document.querySelector("#status");
@@ -203,17 +202,48 @@ async function insertFile() {
 }
 
 function insertTable() {
-  const rows = Number(window.prompt("Rows", "2"));
-  const cols = Number(window.prompt("Columns", "2"));
-  if (!rows || !cols) {
+  const dialog = document.querySelector("#table-dialog");
+  const rowsInput = document.querySelector("#table-rows");
+  const colsInput = document.querySelector("#table-cols");
+
+  if (!dialog || !rowsInput || !colsInput) {
     return;
   }
-  const tableApi = mdtable && mdtable.create ? mdtable : mdtable && mdtable.default ? mdtable.default : null;
-  if (!tableApi || typeof tableApi.create !== "function") {
+
+  if (typeof dialog.showModal !== "function") {
+    const rows = 2;
+    const cols = 2;
+    const header = `| ${Array.from({ length: cols }, () => "Header").join(" | ")} |`;
+    const separator = `| ${Array.from({ length: cols }, () => "---").join(" | ")} |`;
+    const bodyRows = Array.from({ length: Math.max(rows - 1, 1) }, () =>
+      `| ${Array.from({ length: cols }, () => "").join(" | ")} |`
+    );
+    insertText([header, separator, ...bodyRows].join("\n"));
     return;
   }
-  const text = tableApi.create(rows, cols).trim();
-  insertText(text);
+
+  dialog.showModal();
+
+  const cancelButton = dialog.querySelector("[data-dialog-cancel]");
+  const onCancel = () => dialog.close("cancel");
+  cancelButton?.addEventListener("click", onCancel, { once: true });
+
+  const onClose = () => {
+    dialog.removeEventListener("close", onClose);
+    if (dialog.returnValue !== "ok") {
+      return;
+    }
+    const rows = Math.max(Number(rowsInput.value) || 0, 1);
+    const cols = Math.max(Number(colsInput.value) || 0, 1);
+    const header = `| ${Array.from({ length: cols }, () => "Header").join(" | ")} |`;
+    const separator = `| ${Array.from({ length: cols }, () => "---").join(" | ")} |`;
+    const bodyRows = Array.from({ length: Math.max(rows - 1, 1) }, () =>
+      `| ${Array.from({ length: cols }, () => "").join(" | ")} |`
+    );
+    insertText([header, separator, ...bodyRows].join("\n"));
+  };
+
+  dialog.addEventListener("close", onClose);
 }
 
 function wrapSelection(before, after = before) {

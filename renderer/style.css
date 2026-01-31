@@ -125,6 +125,53 @@ body {
   color: var(--muted);
 }
 
+dialog {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--panel);
+  color: var(--ink);
+  max-width: 320px;
+}
+
+dialog::backdrop {
+  background: rgba(20, 20, 20, 0.35);
+}
+
+dialog form {
+  display: grid;
+  gap: 12px;
+}
+
+dialog label {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+dialog input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #fff;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog-actions button {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--ink);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 @media (max-width: 900px) {
   .split {
     grid-template-columns: 1fr;

@@ -54,7 +54,6 @@
     "isbinaryfile": "^6.0.0",
     "katex": "^0.16.0",
     "markdown-it": "^14.0.0",
-    "markdown-table-template": "^1.0.1",
     "plist": "^3.1.0",
     "relative": "^3.0.2"
   },

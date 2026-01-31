@@ -104,6 +104,23 @@
         <span id="status">Ready</span>
       </footer>
     </div>
+    <dialog id="table-dialog">
+      <form method="dialog">
+        <h3>Insert table</h3>
+        <label>
+          Rows
+          <input type="number" id="table-rows" min="1" value="2" />
+        </label>
+        <label>
+          Columns
+          <input type="number" id="table-cols" min="1" value="2" />
+        </label>
+        <div class="dialog-actions">
+          <button value="cancel" type="button" data-dialog-cancel>Cancel</button>
+          <button value="ok" type="submit">Insert</button>
+        </div>
+      </form>
+    </dialog>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
