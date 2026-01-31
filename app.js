@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, dialog, ipcMain, shell, session } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain, shell, session, protocol } = require('electron');
 const fs = require('fs/promises');
 const fsSync = require('fs');
 const path = require('path');
@@ -8,6 +8,7 @@ let mainWindow = null;
 let pendingOpenFile = null;
 const isDev = !app.isPackaged;
 let cspConfigured = false;
+let protocolConfigured = false;
 
 // require('electron-debug')({ showDevTools: true });
 
@@ -46,13 +47,30 @@ const cliFile = normalizeFilePath(resolveCliFile());
 const readFile = cliFile;
 
 function createWindow() {
+    if (!protocolConfigured) {
+        protocolConfigured = true;
+        protocol.registerFileProtocol('app', (request, callback) => {
+            try {
+                const url = new URL(request.url);
+                let filePath = decodeURIComponent(url.pathname);
+                if (process.platform === 'win32' && filePath.startsWith('/')) {
+                    filePath = filePath.slice(1);
+                }
+                const resolved = path.resolve(filePath);
+                callback({ path: resolved });
+            } catch (err) {
+                callback({ error: -6 });
+            }
+        });
+    }
     if (isDev && !cspConfigured) {
         cspConfigured = true;
         const devCsp = [
             "default-src 'self' http://localhost:5173",
             "script-src 'self' 'unsafe-eval' http://localhost:5173",
             "style-src 'self' 'unsafe-inline' http://localhost:5173",
-            "img-src 'self' data: blob: http://localhost:5173",
+            "img-src 'self' data: blob: app: http://localhost:5173",
+            "media-src 'self' data: blob: app: http://localhost:5173",
             "font-src 'self' data: http://localhost:5173",
             "connect-src 'self' ws://localhost:5173 http://localhost:5173"
         ].join('; ');

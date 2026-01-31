@@ -59,7 +59,7 @@ body {
   width: 18px;
   height: 18px;
   stroke: currentColor;
-  fill: currentColor;
+  fill: none;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;

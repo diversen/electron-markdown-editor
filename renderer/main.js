@@ -36,6 +36,36 @@ const md = new MarkdownIt({
   },
 });
 
+function toFileUrl(src) {
+  if (!src) {
+    return src;
+  }
+  if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:") || src.startsWith("file://")) {
+    return src;
+  }
+  if (src.startsWith("/")) {
+    return `app://${encodeURI(src)}`;
+  }
+  if (/^[A-Za-z]:[\\/]/.test(src)) {
+    const normalized = src.replace(/\\/g, "/");
+    return `app:///${encodeURI(normalized)}`;
+  }
+  return src;
+}
+
+const defaultImageRule = md.renderer.rules.image;
+md.renderer.rules.image = (tokens, idx, options, env, self) => {
+  const token = tokens[idx];
+  const src = token.attrGet("src");
+  if (src) {
+    token.attrSet("src", toFileUrl(src));
+  }
+  if (defaultImageRule) {
+    return defaultImageRule(tokens, idx, options, env, self);
+  }
+  return self.renderToken(tokens, idx, options);
+};
+
 function renderPreview(docText) {
   previewEl.innerHTML = md.render(docText);
   renderMathInElement(previewEl, {
@@ -160,7 +190,8 @@ async function insertVideo() {
   if (!path) {
     return;
   }
-  insertText(`![title](${path})`);
+  const src = toFileUrl(path);
+  insertText(`<video controls src="${src}"></video>`);
 }
 
 async function insertFile() {

@@ -1,7 +1,7 @@
 {
   "name": "electron-markdown-editor",
   "productName": "ElectronMarkdownEditor",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "electronVersion": "40.0.0",
   "description": "A markdown editor built with electron, uikit, and markdown-it",
   "keywords": [
@@ -25,6 +25,7 @@
     "dev:all": "concurrently -k \"vite\" \"VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
     "build": "vite build",
     "preview": "vite preview --host",
+    "prepublishOnly": "npm run build",
     "build:osx": "npm run build && electron-packager . $npm_package_productName --out=release --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:win": "npm run build && electron-packager . $npm_package_productName --out=release --arch=all --platform=win32 --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
     "build:linux": "npm run build && electron-packager . $npm_package_productName --out=release --arch=x64 --platform=linux --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version"
@@ -33,6 +34,15 @@
     "type": "git",
     "url": "https://github.com/diversen/electron-markdown-editor.git"
   },
+  "files": [
+    "app.js",
+    "preload.js",
+    "bin/",
+    "dist/",
+    "resources/",
+    "package.json",
+    "README.md"
+  ],
   "author": "Dennis Iversen",
   "license": "MIT",
   "dependencies": {
