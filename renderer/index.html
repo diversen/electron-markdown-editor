@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electron Markdown Editor</title>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' http://localhost:5173;
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data: blob:;
+        font-src 'self' data:;
+        connect-src 'self' http://localhost:5173 ws://localhost:5173;
+      "
+    />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="toolbar">
+          <button data-action="open" title="Open" aria-label="Open">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V6.5A2.5 2.5 0 0 1 6.5 4h4l2 2h5A2.5 2.5 0 0 1 20 8.5V19z"/></svg>
+          </button>
+          <button data-action="save" title="Save" aria-label="Save">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M7 4v6h8V4z"/></svg>
+          </button>
+          <button data-action="saveAs" title="Save As" aria-label="Save As">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M7 4v6h8V4z"/><path d="M8 15h8"/></svg>
+          </button>
+          <span class="sep"></span>
+          <button data-action="bold" title="Bold" aria-label="Bold">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h6a4 4 0 0 1 0 8H8z"/><path d="M8 12h7a4 4 0 0 1 0 8H8z"/></svg>
+          </button>
+          <button data-action="italic" title="Italic" aria-label="Italic">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4h10"/><path d="M4 20h10"/><path d="M14 4L8 20"/></svg>
+          </button>
+          <button data-action="link" title="Link" aria-label="Link">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a4 4 0 0 1 0-6l2-2a4 4 0 0 1 6 6l-1 1"/><path d="M14 11a4 4 0 0 1 0 6l-2 2a4 4 0 1 1-6-6l1-1"/></svg>
+          </button>
+          <button data-action="image" title="Insert Image" aria-label="Insert Image">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M7 15l3-4 3 4 4-6 3 6"/></svg>
+          </button>
+          <button data-action="video" title="Insert Video" aria-label="Insert Video">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12v12H4z"/><path d="M16 10l4-2v8l-4-2z"/></svg>
+          </button>
+          <button data-action="file" title="Insert File" aria-label="Insert File">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h8l4 4v12H6z"/><path d="M14 4v4h4"/></svg>
+          </button>
+          <button data-action="table" title="Insert Table" aria-label="Insert Table">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/><path d="M4 14h16"/><path d="M10 6v12"/><path d="M14 6v12"/></svg>
+          </button>
+        </div>
+      </header>
+      <main class="split">
+        <section class="pane editor">
+          <div id="editor"></div>
+        </section>
+        <section class="pane preview">
+          <div id="preview"></div>
+        </section>
+      </main>
+      <footer class="statusbar">
+        <span id="status">Ready</span>
+      </footer>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

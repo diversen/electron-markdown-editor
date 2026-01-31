@@ -1,10 +1,13 @@
-const { app, BrowserWindow, Menu, dialog, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, Menu, dialog, ipcMain, shell, session } = require('electron');
 const fs = require('fs/promises');
+const fsSync = require('fs');
 const path = require('path');
-const isBinaryFile = require('isbinaryfile');
+const { isBinaryFileSync } = require('isbinaryfile');
 
 let mainWindow = null;
 let pendingOpenFile = null;
+const isDev = !app.isPackaged;
+let cspConfigured = false;
 
 // require('electron-debug')({ showDevTools: true });
 
@@ -43,6 +46,25 @@ const cliFile = normalizeFilePath(resolveCliFile());
 const readFile = cliFile;
 
 function createWindow() {
+    if (isDev && !cspConfigured) {
+        cspConfigured = true;
+        const devCsp = [
+            "default-src 'self' http://localhost:5173",
+            "script-src 'self' 'unsafe-eval' http://localhost:5173",
+            "style-src 'self' 'unsafe-inline' http://localhost:5173",
+            "img-src 'self' data: blob: http://localhost:5173",
+            "font-src 'self' data: http://localhost:5173",
+            "connect-src 'self' ws://localhost:5173 http://localhost:5173"
+        ].join('; ');
+
+        const filter = { urls: ['http://localhost:5173/*'] };
+        session.defaultSession.webRequest.onHeadersReceived(filter, (details, callback) => {
+            const headers = details.responseHeaders || {};
+            headers['Content-Security-Policy'] = [devCsp];
+            callback({ responseHeaders: headers });
+        });
+    }
+
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -55,7 +77,22 @@ function createWindow() {
         }
     });
 
-    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    const devServerUrl = process.env.VITE_DEV_SERVER_URL;
+    if (isDev && devServerUrl) {
+        mainWindow.loadURL(devServerUrl);
+    } else {
+        const distIndex = path.join(__dirname, 'dist', 'index.html');
+        if (fsSync.existsSync(distIndex)) {
+            mainWindow.loadFile(distIndex);
+        } else if (isDev) {
+            mainWindow.loadURL('http://localhost:5173');
+        } else {
+            dialog.showErrorBox(
+                'Missing build output',
+                'dist/index.html was not found. Run "npm run build" and try again.'
+            );
+        }
+    }
     if (readFile) {
         mainWindow.webContents.once('did-finish-load', () => {
             sendToRenderer('app-open-file', readFile);
@@ -188,53 +225,98 @@ function buildMenu() {
 }
 
 ipcMain.handle('dialog:open-markdown', async () => {
-    const result = await dialog.showOpenDialog(mainWindow, {
-        filters: [{ name: 'markdown', extensions: ['txt', 'md', 'markdown'] }]
-    });
-    if (result.canceled || result.filePaths.length === 0) {
+    console.log('[electron-markdown-editor] dialog:open-markdown');
+    try {
+        if (mainWindow) {
+            mainWindow.focus();
+        }
+        const result = dialog.showOpenDialogSync(mainWindow, {
+            filters: [{ name: 'markdown', extensions: ['txt', 'md', 'markdown'] }]
+        });
+        if (!result || result.length === 0) {
+            return null;
+        }
+        return result[0];
+    } catch (err) {
+        console.error('[electron-markdown-editor] open-markdown dialog failed', err);
         return null;
     }
-    return result.filePaths[0];
 });
 
 ipcMain.handle('dialog:save-markdown', async () => {
-    const result = await dialog.showSaveDialog(mainWindow, {
-        filters: [{ name: 'Save as', extensions: ['txt', 'md', 'markdown'] }]
-    });
-    if (result.canceled || !result.filePath) {
+    console.log('[electron-markdown-editor] dialog:save-markdown');
+    try {
+        if (mainWindow) {
+            mainWindow.focus();
+        }
+        const result = dialog.showSaveDialogSync(mainWindow, {
+            filters: [{ name: 'Save as', extensions: ['txt', 'md', 'markdown'] }]
+        });
+        if (!result) {
+            return null;
+        }
+        return result;
+    } catch (err) {
+        console.error('[electron-markdown-editor] save-markdown dialog failed', err);
         return null;
     }
-    return result.filePath;
 });
 
 ipcMain.handle('dialog:open-image', async () => {
-    const result = await dialog.showOpenDialog(mainWindow, {
-        filters: [{ name: 'Insert image', extensions: ['jpg', 'gif', 'svg', 'png', 'mp4'] }]
-    });
-    if (result.canceled || result.filePaths.length === 0) {
+    console.log('[electron-markdown-editor] dialog:open-image');
+    try {
+        if (mainWindow) {
+            mainWindow.focus();
+        }
+        const result = dialog.showOpenDialogSync(mainWindow, {
+            filters: [{ name: 'Insert image', extensions: ['jpg', 'gif', 'svg', 'png', 'mp4'] }]
+        });
+        if (!result || result.length === 0) {
+            return null;
+        }
+        return result[0];
+    } catch (err) {
+        console.error('[electron-markdown-editor] open-image dialog failed', err);
         return null;
     }
-    return result.filePaths[0];
 });
 
 ipcMain.handle('dialog:open-video', async () => {
-    const result = await dialog.showOpenDialog(mainWindow, {
-        filters: [{ name: 'Insert video', extensions: ['mp4'] }]
-    });
-    if (result.canceled || result.filePaths.length === 0) {
+    console.log('[electron-markdown-editor] dialog:open-video');
+    try {
+        if (mainWindow) {
+            mainWindow.focus();
+        }
+        const result = dialog.showOpenDialogSync(mainWindow, {
+            filters: [{ name: 'Insert video', extensions: ['mp4'] }]
+        });
+        if (!result || result.length === 0) {
+            return null;
+        }
+        return result[0];
+    } catch (err) {
+        console.error('[electron-markdown-editor] open-video dialog failed', err);
         return null;
     }
-    return result.filePaths[0];
 });
 
 ipcMain.handle('dialog:open-file', async () => {
-    const result = await dialog.showOpenDialog(mainWindow, {
-        filters: [{ name: 'Insert file', extensions: ['*'] }]
-    });
-    if (result.canceled || result.filePaths.length === 0) {
+    console.log('[electron-markdown-editor] dialog:open-file');
+    try {
+        if (mainWindow) {
+            mainWindow.focus();
+        }
+        const result = dialog.showOpenDialogSync(mainWindow, {
+            filters: [{ name: 'Insert file', extensions: ['*'] }]
+        });
+        if (!result || result.length === 0) {
+            return null;
+        }
+        return result[0];
+    } catch (err) {
+        console.error('[electron-markdown-editor] open-file dialog failed', err);
         return null;
     }
-    return result.filePaths[0];
 });
 
 ipcMain.handle('fs:read-text', async (event, filePath) => {
@@ -258,7 +340,7 @@ ipcMain.handle('fs:is-binary', async (event, filePath) => {
     if (typeof filePath !== 'string' || filePath.length === 0) {
         return true;
     }
-    return isBinaryFile.sync(filePath);
+    return isBinaryFileSync(filePath);
 });
 
 ipcMain.handle('shell:open-external', async (event, url) => {

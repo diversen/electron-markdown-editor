@@ -17,12 +17,17 @@
     "electron-markdown-editor": "./bin/electron-markdown-editor"
   },
   "scripts": {
-    "clean:dist": "rm -rf ./dist",
+    "clean:dist": "rm -rf ./dist ./release",
     "start": "electron .",
     "start:no-sandbox": "electron . --no-sandbox",
-    "build:osx": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version",
-    "build:win": "electron-packager . $npm_package_productName --out=dist --arch=all --platform=win32 --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
-    "build:linux": "electron-packager . $npm_package_productName --out=dist --arch=x64 --platform=linux --ignore='^/dist$' --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version"
+    "dev": "vite",
+    "dev:electron": "VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
+    "dev:all": "concurrently -k \"vite\" \"VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "build:osx": "npm run build && electron-packager . $npm_package_productName --out=release --overwrite --prune --asar --arch=all --platform=darwin --icon=./resources/icon.icns --version=$npm_package_electronVersion --app-version=$npm_package_version",
+    "build:win": "npm run build && electron-packager . $npm_package_productName --out=release --arch=all --platform=win32 --prune --asar --overwrite --icon=./resources/icon.ico --version=$npm_package_electronVersion --app-version=$npm_package_version",
+    "build:linux": "npm run build && electron-packager . $npm_package_productName --out=release --arch=x64 --platform=linux --prune --asar --overwrite --icon=./resources/icon.png --version=$npm_package_electronVersion --app-version=$npm_package_version"
   },
   "repository": {
     "type": "git",
@@ -31,19 +36,23 @@
   "author": "Dennis Iversen",
   "license": "MIT",
   "dependencies": {
-    "@highlightjs/cdn-assets": "^11.11.1",
-    "codemirror": "5.65.20",
+    "@codemirror/lang-markdown": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "codemirror": "^6.0.0",
     "electron": "^40.0.0",
-    "isbinaryfile": "^3.0.3",
-    "jquery": "^3.7.1",
-    "katex": "^0.16.22",
-    "markdown-it": "^14.1.0",
+    "highlight.js": "^11.0.0",
+    "isbinaryfile": "^6.0.0",
+    "katex": "^0.16.0",
+    "markdown-it": "^14.0.0",
     "markdown-table-template": "^1.0.1",
     "plist": "^3.1.0",
-    "relative": "^3.0.2",
-    "uikit": "^2.27.4"
+    "relative": "^3.0.2"
   },
-  "devDependencies": {},
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "vite": "^6.0.0"
+  },
   "engines": {
     "node": ">=24.13.0"
   }
