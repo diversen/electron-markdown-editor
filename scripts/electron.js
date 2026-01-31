@@ -36,7 +36,7 @@ var insertLine = function (doc, pos, text) {
     doc.replaceRange(text, pos);
 };
 
-// Matjax
+// Math rendering + debounce helper
 var delay = (function () {
     var timer = 0;
     return function (callback, ms) {
@@ -45,12 +45,35 @@ var delay = (function () {
     };
 })();
 
+function renderMath() {
+    if (typeof window.renderMathInElement !== 'function') {
+        return;
+    }
+    var container = document.querySelector('.uk-htmleditor-preview > div');
+    if (!container) {
+        return;
+    }
+    window.renderMathInElement(container, {
+        delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true }
+        ],
+        throwOnError: false
+    });
+}
+
+function renderMathSoon() {
+    delay(function () {
+        renderMath();
+    }, 300);
+}
+
 $(document).ready(function () {
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    renderMathSoon();
     $('.markdown').keyup(function () {
-        delay(function () {
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-        }, 2000);
+        renderMathSoon();
     });
 });
 
@@ -108,6 +131,7 @@ function readMarkdownFile(fileName) {
     api.readTextFile(fileName).then(function (data) {
         editor.setValue(data);
         editor.refresh();
+        renderMathSoon();
         UIkit.notify({
             message: 'File opened',
             status: 'info',
